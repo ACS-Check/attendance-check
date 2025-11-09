@@ -4,8 +4,8 @@ import dao.UserDAO;
 import model.User;
 import util.PasswordUtil;
 
-import javax.servlet.*;
-import javax.servlet.http.*;
+import jakarta.servlet.*;
+import jakarta.servlet.http.*;
 import java.io.IOException;
 
 /**
