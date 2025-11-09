@@ -5,3 +5,37 @@
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
 </web-app>
+
+<!-- 출석 코드 생성(교사) -->
+<servlet>
+  <servlet-name>CreateCode</servlet-name>
+  <servlet-class>controller.CreateCodeServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+  <servlet-name>CreateCode</servlet-name>
+  <url-pattern>/teacher/code</url-pattern>
+</servlet-mapping>
+
+<!-- 출석 체크(학생) -->
+<servlet>
+  <servlet-name>Attend</servlet-name>
+  <servlet-class>controller.AttendServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+  <servlet-name>Attend</servlet-name>
+  <url-pattern>/attend/mark</url-pattern>
+</servlet-mapping>
+
+<!-- 조회 -->
+<servlet>
+  <servlet-name>AttendanceList</servlet-name>
+  <servlet-class>controller.AttendanceListServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+  <servlet-name>AttendanceList</servlet-name>
+  <url-pattern>/attend/list</url-pattern>
+</servlet-mapping>
+<servlet-mapping>
+  <servlet-name>AttendanceList</servlet-name>
+  <url-pattern>/teacher/daily</url-pattern>
+</servlet-mapping>
