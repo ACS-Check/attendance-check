@@ -10,7 +10,7 @@ public class DBConnection {
     private static final String PORT = env("DB_PORT", "3306");
     private static final String NAME = env("DB_NAME", "attendance");
     private static final String USER = env("DB_USER", "root");
-    private static final String PASS = env("DB_PASS", "0000");
+    private static final String PASS = env("DB_PASS", "1234");
 
     static {
         try {
