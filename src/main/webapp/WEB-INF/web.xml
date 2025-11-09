@@ -1,28 +1,36 @@
-<!DOCTYPE web-app PUBLIC
- "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
- "http://java.sun.com/dtd/web-app_2_3.dtd" >
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app
+    xmlns="https://jakarta.ee/xml/ns/jakartaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_5_0.xsd"
+    version="5.0"
+    metadata-complete="false">
 
-<web-app>
-  <display-name>Archetype Created Web Application</display-name>
+  <display-name>Attendance System</display-name>
+
+  <!-- 첫 화면 -->
+  <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
+
+  <!-- 로그인 상태 확인 필터 -->
+  <filter>
+    <filter-name>AuthFilter</filter-name>
+    <filter-class>filter.AuthFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>AuthFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+  <!-- 관리자 권한 필터 -->
+  <filter>
+    <filter-name>RoleFilter</filter-name>
+    <filter-class>filter.RoleFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>RoleFilter</filter-name>
+    <url-pattern>/teacher/*</url-pattern>
+  </filter-mapping>
+
 </web-app>
-
-<!-- 로그인 상태 확인 필터 -->
-<filter>
-  <filter-name>AuthFilter</filter-name>
-  <filter-class>filter.AuthFilter</filter-class>
-</filter>
-<filter-mapping>
-  <filter-name>AuthFilter</filter-name>
-  <url-pattern>/*</url-pattern>
-</filter-mapping>
-
-<!-- 관리자 권한 필터 -->
-<filter>
-  <filter-name>RoleFilter</filter-name>
-  <filter-class>filter.RoleFilter</filter-class>
-</filter>
-<filter-mapping>
-  <filter-name>RoleFilter</filter-name>
-  <url-pattern>/teacher/*</url-pattern>
-</filter-mapping>
-
