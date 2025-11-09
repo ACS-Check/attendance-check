@@ -6,13 +6,16 @@ import util.PasswordUtil;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
+import jakarta.servlet.annotation.WebServlet;
 import java.io.IOException;
 
 /**
  * 회원가입 요청 처리 서블릿
  * - POST /register
  */
+@WebServlet(name = "RegisterServlet", urlPatterns = {"/register"})
 public class RegisterServlet extends HttpServlet {
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -20,7 +23,8 @@ public class RegisterServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-        String role = request.getParameter("role"); // "student" or "teacher"
+        String name = request.getParameter("name");
+        String role = request.getParameter("role"); // "student" or "admin"
 
         UserDAO dao = new UserDAO();
 
@@ -33,10 +37,10 @@ public class RegisterServlet extends HttpServlet {
         }
 
         // 비밀번호 해싱 후 DB 삽입
-        String hashed = PasswordUtil.hashPassword(password);
         User user = new User();
         user.setUsername(username);
-        user.setPassword(hashed);
+        user.setPassword(PasswordUtil.hashPassword(password));
+        user.setName(name);
         user.setRole(role);
 
         boolean success = dao.insertUser(user);
