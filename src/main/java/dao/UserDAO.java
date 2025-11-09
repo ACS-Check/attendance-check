@@ -19,11 +19,12 @@ public class UserDAO {
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, user.getUsername());
-            ps.setString(2, PasswordUtil.hashPassword(user.getPassword()));
+            ps.setString(2, PasswordUtil.hashPassword(user.getPassword())); // 비밀번호 해시 저장
             ps.setString(3, user.getName());
             ps.setString(4, user.getRole());
             ps.executeUpdate();
             return true;
+
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -31,7 +32,7 @@ public class UserDAO {
     }
 
     /** username으로 회원 조회 */
-    public Optional<User> findByUsername(String username) {
+    public User findByUsername(String username) {
         String sql = "SELECT user_id, username, password, name, role, created_at FROM user WHERE username=?";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -39,24 +40,27 @@ public class UserDAO {
             ps.setString(1, username);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    User user = map(rs);
-                    return Optional.of(user);
+                    User u = new User();
+                    u.setUserId(rs.getInt("user_id"));
+                    u.setUsername(rs.getString("username"));
+                    u.setPassword(rs.getString("password"));
+                    u.setName(rs.getString("name"));
+                    u.setRole(rs.getString("role"));
+                    u.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
+                    return u;
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException("UserDAO.findByUsername failed", e);
         }
-        return Optional.empty();
+        return null;
     }
 
     /** 로그인 검증 (username, password 확인) */
     public Optional<User> validateLogin(String username, String password) {
-        Optional<User> userOpt = findByUsername(username);
-        if (userOpt.isPresent()) {
-            User user = userOpt.get();
-            if (PasswordUtil.checkPassword(password, user.getPassword())) {
-                return Optional.of(user);
-            }
+        User user = findByUsername(username); // Optional 제거 → User 직접 반환
+        if (user != null && PasswordUtil.checkPassword(password, user.getPassword())) {
+            return Optional.of(user);
         }
         return Optional.empty();
     }
