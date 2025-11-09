@@ -39,3 +39,24 @@
   <servlet-name>AttendanceList</servlet-name>
   <url-pattern>/teacher/daily</url-pattern>
 </servlet-mapping>
+
+<!-- 로그인 상태 확인 필터 -->
+<filter>
+  <filter-name>AuthFilter</filter-name>
+  <filter-class>filter.AuthFilter</filter-class>
+</filter>
+<filter-mapping>
+  <filter-name>AuthFilter</filter-name>
+  <url-pattern>/*</url-pattern>
+</filter-mapping>
+
+<!-- 관리자 권한 필터 -->
+<filter>
+  <filter-name>RoleFilter</filter-name>
+  <filter-class>filter.RoleFilter</filter-class>
+</filter>
+<filter-mapping>
+  <filter-name>RoleFilter</filter-name>
+  <url-pattern>/teacher/*</url-pattern>
+</filter-mapping>
+
