@@ -1,14 +1,25 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<!DOCTYPE html>
-<html>
-<head><meta charset="UTF-8"><title>Attendance</title></head>
-<body>
-  <h1>Attendance System</h1>
-  <ul>
-    <li><a href="register.jsp">회원가입</a></li>
-    <li><a href="login.jsp">로그인</a></li>
-    <li><a href="teacher.jsp">출석코드 생성(관리자)</a></li>
-    <li><a href="attend.jsp">출석체크(학생)</a></li>
-  </ul>
-</body>
-</html>
+<%
+  // 최소한의 리다이렉트 처리 (JSP 컴파일 안정성 위해 불필요한 마크업 제거)
+  jakarta.servlet.http.HttpSession s = request.getSession(false);
+  System.out.print("session:" + s);
+  if (s == null) {
+    response.sendRedirect(request.getContextPath() + "/login.jsp");
+    return;
+  }
+  String role = (String) s.getAttribute("role");
+  if (role == null) {
+    response.sendRedirect(request.getContextPath() + "/login.jsp");
+    return;
+  }
+  if ("admin".equalsIgnoreCase(role)) {
+    response.sendRedirect(request.getContextPath() + "/teacher.jsp");
+    return;
+  }
+  if ("student".equalsIgnoreCase(role)) {
+    response.sendRedirect(request.getContextPath() + "/student.jsp");
+    return;
+  }
+  // 알 수 없는 role 기본 처리
+  response.sendRedirect(request.getContextPath() + "/login.jsp");
+%>
