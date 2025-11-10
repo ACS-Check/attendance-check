@@ -14,7 +14,7 @@ public class UserDAO {
 
     /** 회원 등록 */
     public boolean insertUser(User user) {
-        String sql = "INSERT INTO user (username, password, name, role) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO users (username, password, name, role) VALUES (?, ?, ?, ?)";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
@@ -33,7 +33,7 @@ public class UserDAO {
 
     /** username으로 회원 조회 */
     public User findByUsername(String username) {
-        String sql = "SELECT user_id, username, password, name, role, created_at FROM user WHERE username=?";
+        String sql = "SELECT user_id, username, password, name, role, created_at FROM users WHERE username=?";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
