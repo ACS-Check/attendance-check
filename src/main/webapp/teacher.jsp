@@ -77,8 +77,9 @@
           document.getElementById('generatedCodeContainer').style.display = 'block';
           document.getElementById('codeFormContainer').style.display = 'none';
 
-          let remainingSeconds = validMinutes * 60;
-          countdownInterval = setInterval(() => {
+          let remainingSeconds = validMinutes * 60; // 유저가 선택한 분을 기준으로 남은 시간 계산
+
+          const updateCountdown = () => {
             if (remainingSeconds <= 0) {
               clearInterval(countdownInterval);
               document.getElementById('generatedCodeContainer').style.display = 'none';
@@ -89,7 +90,10 @@
               document.getElementById('remainingTime').textContent = "(" + minutes + ':' + (seconds < 10 ? '0' : '') + seconds + ")";
               remainingSeconds--;
             }
-          }, 1000);
+          };
+
+          updateCountdown(); // 즉시 실행
+          countdownInterval = setInterval(updateCountdown, 1000); // 1초마다 실행
         } else {
           alert('코드 생성에 실패했습니다. 다시 시도해주세요.');
         }
