@@ -34,17 +34,8 @@
         color:#213547; background-color:#ffffff; font-synthesis:none;
         text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
       }
-      a { font-weight:500; color:#646cff; text-decoration:none; }
-      a:hover { color:#535bf2; }
-      button { border-radius:8px; border:1px solid transparent; padding:.6em 1.2em; font-size:1em; font-weight:500; font-family:inherit; background:#f9f9f9; cursor:pointer; transition:border-color .25s; }
-      button:hover { border-color:#646cff; }
-      button:focus, button:focus-visible { outline:4px auto -webkit-focus-ring-color; }
       /* Layout (standard mode) */
       body.std-body { margin:0; background:#f3f4f6; color:#111827; }
-      header.site { background:#111827; color:#fff; padding:12px 20px; display:flex; align-items:center; justify-content:space-between; }
-      header.site a { color:#f3f4f6; margin-right:14px; font-size:14px; }
-      header.site a:last-child { margin-right:0; }
-      header.site a:hover { text-decoration:underline; }
       <%-- main { margin:20px auto; background:#ffffff; padding:24px; border-radius:12px; box-shadow:0 2px 4px rgba(0,0,0,.08); } --%>
       footer.site { text-align:center; font-size:12px; color:#6b7280; padding:32px 0 40px; }
       .role-badge { font-size:11px; background:#374151; color:#e5e7eb; padding:2px 6px; border-radius:6px; margin-left:8px; }
@@ -89,10 +80,40 @@
       <div id="<%=rid%>"></div>
       <jsp:doBody/>
     <% } else { %>
-      <header class="site">
-        <div class="flex justify-between items-center w-full">
-          <strong>Attendance</strong>
-          <% if (userName != null) { %><span class="role-badge"><%= role %></span><% } %>
+      <header class="h-16 bg-primary-200 shadow-md">
+        <div class="flex justify-between items-center w-full px-6 h-full">
+          <!-- Left: Logo and Title -->
+          <div class="flex items-center space-x-4">
+            <img src="<%=ctx%>/static/icon-aws.svg" alt="Logo" class="h-8 w-8">
+            <span class="text-black font-bold text-lg">AWS Cloud School</span>
+          </div>
+
+          <!-- Right: User Info and Tooltip -->
+          <% if (userName != null) { %>
+            <div class="relative">
+              <button id="user-menu" class="text-black font-medium flex items-center space-x-2">
+                <span>
+                  <%= userName %> (
+                  <% if ("admin".equalsIgnoreCase(role)) { %>
+                    강사
+                  <% } else if ("student".equalsIgnoreCase(role)) { %>
+                    학생
+                  <% } %>
+                  )
+                </span>
+                <i data-lucide="chevron-down" class="w-4 h-4"></i>
+              </button>
+              <div id="tooltip-menu" class="hidden absolute right-0 top-8 w-48 bg-white rounded-md shadow-lg">
+                <a href="<%=ctx%>/logout" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Logout</a>
+              </div>
+            </div>
+            <script>
+              document.getElementById('user-menu').addEventListener('click', function () {
+                const tooltip = document.getElementById('tooltip-menu');
+                tooltip.classList.toggle('hidden');
+              });
+            </script>
+          <% } %>
         </div>
       </header>
       <main class="flex-1 flex justify-center items-center">
