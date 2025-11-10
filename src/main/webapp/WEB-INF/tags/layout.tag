@@ -80,7 +80,7 @@
       <div id="<%=rid%>"></div>
       <jsp:doBody/>
     <% } else { %>
-      <header class="h-16 bg-primary-200 shadow-md">
+      <header class="h-16 bg-primary-100 shadow-md">
         <div class="flex justify-between items-center w-full px-6 h-full">
           <!-- Left: Logo and Title -->
           <div class="flex items-center space-x-4">
@@ -117,9 +117,6 @@
         </div>
       </header>
       <main class="flex-1 flex justify-center items-center">
-        <% if (userName != null) { %>
-          <p class="muted">안녕하세요, <strong><%= userName %></strong>님.</p>
-        <% } %>
         <jsp:doBody/>
       </main>
       <footer class="site">

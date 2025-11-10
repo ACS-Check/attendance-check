@@ -97,6 +97,7 @@
                 document.getElementById('role-admin-label').classList.add('inactive');
                 document.getElementById('role-admin-label').classList.remove('active');
               "
+              checked
             />
             <label
               id="role-student-label"
