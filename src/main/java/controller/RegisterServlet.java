@@ -1,13 +1,15 @@
 package controller;
 
-import dao.UserDAO;
-import model.User;
-import util.PasswordUtil;
-
-import jakarta.servlet.*;
-import jakarta.servlet.http.*;
-import jakarta.servlet.annotation.WebServlet;
 import java.io.IOException;
+
+import dao.UserDAO;
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import model.User;
 
 /**
  * 회원가입 요청 처리 서블릿
@@ -39,7 +41,7 @@ public class RegisterServlet extends HttpServlet {
         // 비밀번호 해싱 후 DB 삽입
         User user = new User();
         user.setUsername(username);
-        user.setPassword(PasswordUtil.hashPassword(password));
+        user.setPassword(password);
         user.setName(name);
         user.setRole(role);
 
