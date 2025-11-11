@@ -32,6 +32,7 @@ public class LoginServlet extends HttpServlet {
 
             // ✅ 세션 생성 및 공통 키 저장 (필터/출석 시스템과 일치)
             HttpSession session = request.getSession();
+            session.setAttribute("user", user); // Add user object for AuthFilter compatibility
             session.setAttribute("user_id", user.getUserId());  // AuthFilter에서 확인
             session.setAttribute("role", user.getRole());        // RoleFilter에서 확인
 
