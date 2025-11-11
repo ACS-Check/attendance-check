@@ -1,13 +1,17 @@
 package controller;
 
+import java.io.IOException;
+
 import dao.UserDAO;
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import model.User;
 import util.PasswordUtil;
-
-import jakarta.servlet.*;
-import jakarta.servlet.http.*;
-import jakarta.servlet.annotation.WebServlet;
-import java.io.IOException;
 
 /**
  * 로그인 요청 처리 서블릿
@@ -39,10 +43,10 @@ public class LoginServlet extends HttpServlet {
             // ✅ 역할에 따라 리다이렉트 분기
             if ("admin".equalsIgnoreCase(user.getRole())) {
                 // 교사(admin) → 출석 코드 생성 페이지로
-                response.sendRedirect(request.getContextPath() + "/teacher.jsp");
+                response.sendRedirect(request.getContextPath() + "/teacher/attendanceList");
             } else {
                 // 학생(student) → 출석 입력 페이지로
-                response.sendRedirect(request.getContextPath() + "/student.jsp");
+                response.sendRedirect(request.getContextPath() + "/student/attendanceList");
             }
 
         } else {

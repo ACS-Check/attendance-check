@@ -45,6 +45,19 @@
       <version>5.10.0</version>
       <scope>test</scope>
     </dependency>
+
+    <!-- JSTL 라이브러리 추가 -->
+    <!-- Jakarta EE 호환 JSTL (표준 태그) -->
+    <dependency>
+      <groupId>jakarta.servlet.jsp.jstl</groupId>
+      <artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
+      <version>2.0.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.glassfish.web</groupId>
+      <artifactId>jakarta.servlet.jsp.jstl</artifactId>
+      <version>2.0.0</version>
+    </dependency>
   </dependencies>
 
   <build>

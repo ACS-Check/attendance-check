@@ -13,11 +13,11 @@
     return;
   }
   if ("admin".equalsIgnoreCase(role)) {
-    response.sendRedirect(request.getContextPath() + "/teacher.jsp");
+    response.sendRedirect(request.getContextPath() + "/teacher/attendanceList");
     return;
   }
   if ("student".equalsIgnoreCase(role)) {
-    response.sendRedirect(request.getContextPath() + "/student.jsp");
+    response.sendRedirect(request.getContextPath() + "/student/attendanceList");
     return;
   }
   // 알 수 없는 role 기본 처리

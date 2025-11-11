@@ -1,14 +1,21 @@
 package dao;
 
-import model.AttendanceRecord;
-import util.TimeUtil;
-
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Time;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import model.AttendanceRecord;
+import model.AttendanceSummary;
+import util.TimeUtil;
 
 public class AttendanceDAO {
 
@@ -79,6 +86,29 @@ public class AttendanceDAO {
             throw new RuntimeException("AttendanceDAO.findByDate failed", e);
         }
         return list;
+    }
+
+    public List<AttendanceSummary> getAttendanceSummary() {
+        String sql = "SELECT attend_date, COUNT(*) AS attendance_count, " +
+                     "(SELECT COUNT(*) FROM users WHERE role='student') AS total_students " +
+                     "FROM attendance GROUP BY attend_date ORDER BY attend_date";
+
+        List<AttendanceSummary> summary = new ArrayList<>();
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                AttendanceSummary row = new AttendanceSummary(
+                    rs.getDate("attend_date").toLocalDate(),
+                    rs.getInt("attendance_count"),
+                    rs.getInt("total_students")
+                );
+                summary.add(row);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("AttendanceDAO.getAttendanceSummary failed", e);
+        }
+        return summary;
     }
 
     // ---- private helpers ----

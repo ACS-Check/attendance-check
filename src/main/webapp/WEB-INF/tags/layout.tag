@@ -75,7 +75,7 @@
     </script>
     <%= (extraHead != null) ? extraHead : "" %>
   </head>
-  <body class="min-h-screen">
+  <body class="min-h-screen min-w-full flex flex-col">
     <% if (onlyRoot) { %>
       <div id="<%=rid%>"></div>
       <jsp:doBody/>
@@ -85,100 +85,99 @@
         boolean hideHeader = currentURI.endsWith("/login.jsp") || currentURI.endsWith("/register.jsp");
       %>
       <% if (!hideHeader) { %>
-      <header class="min-h-screen w-full flex flex-col md:flex-row">
-        <!-- Navigation Menu -->
-        <nav class="bg-primary-500 text-white w-full md:w-56 flex-shrink-0">
-          <div class="h-16 flex items-center justify-between px-4 text-lg font-semibold tracking-tight">
-            <div class="flex items-center gap-3 justify-between w-full">
-              <div class="rounded-md bg-white p-1">
-                <img
-                  src="<%=ctx%>/static/icon-aws.svg"
-                  alt="AWS Cloud School"
-                  class="h-8 w-8 block"
-                />
-              </div>
-              <div class="relative" id="user-menu-container">
-                <button
-                  id="user-menu-button"
-                  class="flex items-center gap-2 rounded-md bg-white/30 px-3 py-1 text-sm hover:bg-white/20 focus:outline-none text-black box-shadow-md"
-                >
-                  <span class="truncate"><%= userName != null ? userName : "사용자" %>
-                    <% if (!"student".equalsIgnoreCase(role)) { %>
-                      (<%= "admin".equalsIgnoreCase(role) ? "관리자" : role %>)
-                    <% } %>
-                  </span>
-                  <i data-lucide="chevron-down" class="w-4 h-4"></i>
-                </button>
-                <div
-                  id="user-menu-dropdown"
-                  class="hidden absolute right-0 mt-2 max-w-30 rounded-md bg-white text-black shadow-lg z-20"
-                >
-                  <a
-                    href="<%=ctx%>/logout"
-                    class="block px-4 py-2 text-sm hover:bg-gray-100 rounded-md text-right whitespace-nowrap"
-                  >
-                    로그아웃
-                  </a>
+      <div class="flex flex-col md:h-screen md:w-full md:flex-row w-screen h-full">
+        <header class="">
+            <!-- Navigation Menu -->
+            <nav class="bg-primary-500 text-white w-full h-full md:w-56 flex-shrink-0">
+            <div class="h-16 flex items-center justify-between px-4 text-lg font-semibold tracking-tight">
+                <div class="flex items-center gap-3 justify-between w-full">
+                <div class="rounded-md bg-white p-1">
+                    <img
+                    src="<%=ctx%>/static/icon-aws.svg"
+                    alt="AWS Cloud School"
+                    class="h-8 w-8 block"
+                    />
                 </div>
-              </div>
+                <div class="relative" id="user-menu-container">
+                    <button
+                    id="user-menu-button"
+                    class="flex items-center gap-2 rounded-md bg-white/30 px-3 py-1 text-sm hover:bg-white/20 focus:outline-none text-black box-shadow-md"
+                    >
+                    <span class="truncate"><%= userName != null ? userName : "사용자" %>
+                        <% if (!"student".equalsIgnoreCase(role)) { %>
+                        (<%= "admin".equalsIgnoreCase(role) ? "관리자" : role %>)
+                        <% } %>
+                    </span>
+                    <i data-lucide="chevron-down" class="w-4 h-4"></i>
+                    </button>
+                    <div
+                    id="user-menu-dropdown"
+                    class="hidden absolute right-0 mt-2 max-w-30 rounded-md bg-white text-black shadow-lg z-20"
+                    >
+                    <a
+                        href="<%=ctx%>/logout"
+                        class="block px-4 py-2 text-sm hover:bg-gray-100 rounded-md text-right whitespace-nowrap"
+                    >
+                        로그아웃
+                    </a>
+                    </div>
+                </div>
+                </div>
             </div>
-          </div>
-          <ul class="space-y-1 p-2">
-            <%-- Dynamic Menu Items --%>
-            <% if ("admin".equalsIgnoreCase(role)) { %>
-              <li>
-                <a href="<%=ctx%>/students" class="group flex items-center gap-3 rounded-md px-3 py-2 text-sm outline-none text-white/90 hover:bg-primary-600 hover:text-white">
-                  <i data-lucide="users" class="h-5 w-5"></i>
-                  <span class="truncate">학생관리</span>
-                </a>
-              </li>
-              <li>
-                <a href="<%=ctx%>/attendance" class="group flex items-center gap-3 rounded-md px-3 py-2 text-sm outline-none text-white/90 hover:bg-primary-600 hover:text-white">
-                  <i data-lucide="calendar-check" class="h-5 w-5"></i>
-                  <span class="truncate">출석관리</span>
-                </a>
-              </li>
-            <% } else if ("student".equalsIgnoreCase(role)) { %>
-              <li>
-                <a href="<%=ctx%>/attendance" class="group flex items-center gap-3 rounded-md px-3 py-2 text-sm outline-none text-white/90 hover:bg-primary-600 hover:text-white">
-                  <i data-lucide="calendar-check" class="h-5 w-5"></i>
-                  <span class="truncate">출결 현황</span>
-                </a>
-              </li>
-              <li>
-                <a href="<%=ctx%>/attendance-enter" class="group flex items-center gap-3 rounded-md px-3 py-2 text-sm outline-none text-white/90 hover:bg-primary-600 hover:text-white">
-                  <i data-lucide="clipboard-check" class="h-5 w-5"></i>
-                  <span class="truncate">출석하기</span>
-                </a>
-              </li>
-            <% } %>
-          </ul>
-        </nav>
-        <script>
-          document.addEventListener("DOMContentLoaded", function () {
-            const userMenuButton = document.getElementById("user-menu-button");
-            const userMenuDropdown = document.getElementById("user-menu-dropdown");
+            <ul class="space-y-1 p-2">
+                <%-- Dynamic Menu Items --%>
+                <% if ("admin".equalsIgnoreCase(role)) { %>
+                <li>
+                    <a href="<%=ctx%>/students" class="group flex items-center gap-3 rounded-md px-3 py-2 text-sm outline-none text-white/90 hover:bg-primary-600 hover:text-white">
+                    <i data-lucide="users" class="h-5 w-5"></i>
+                    <span class="truncate">학생관리</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="<%=ctx%>/attendance" class="group flex items-center gap-3 rounded-md px-3 py-2 text-sm outline-none text-white/90 hover:bg-primary-600 hover:text-white">
+                    <i data-lucide="calendar-check" class="h-5 w-5"></i>
+                    <span class="truncate">출석관리</span>
+                    </a>
+                </li>
+                <% } else if ("student".equalsIgnoreCase(role)) { %>
+                <li>
+                    <a href="<%=ctx%>/attendance" class="group flex items-center gap-3 rounded-md px-3 py-2 text-sm outline-none text-white/90 hover:bg-primary-600 hover:text-white">
+                    <i data-lucide="calendar-check" class="h-5 w-5"></i>
+                    <span class="truncate">출결 현황</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="<%=ctx%>/attendance-enter" class="group flex items-center gap-3 rounded-md px-3 py-2 text-sm outline-none text-white/90 hover:bg-primary-600 hover:text-white">
+                    <i data-lucide="clipboard-check" class="h-5 w-5"></i>
+                    <span class="truncate">출석하기</span>
+                    </a>
+                </li>
+                <% } %>
+            </ul>
+            </nav>
+            <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const userMenuButton = document.getElementById("user-menu-button");
+                const userMenuDropdown = document.getElementById("user-menu-dropdown");
 
-            userMenuButton.addEventListener("click", function () {
-              userMenuDropdown.classList.toggle("hidden");
-            });
+                userMenuButton.addEventListener("click", function () {
+                userMenuDropdown.classList.toggle("hidden");
+                });
 
-            document.addEventListener("click", function (event) {
-              const menuContainer = document.getElementById("user-menu-container");
-              if (!menuContainer.contains(event.target)) {
-                userMenuDropdown.classList.add("hidden");
-              }
+                document.addEventListener("click", function (event) {
+                const menuContainer = document.getElementById("user-menu-container");
+                if (!menuContainer.contains(event.target)) {
+                    userMenuDropdown.classList.add("hidden");
+                }
+                });
             });
-          });
-        </script>
-      </header>
-      <% } %>
-      <main class="flex-1 flex justify-center items-center">
-        <jsp:doBody/>
-      </main>
-      <footer class="site">
-        <p>&copy; 2025 Attendance System</p>
-      </footer>
+            </script>
+        </header>
+        <% } %>
+        <main class="flex-1 flex flex-col p-6">
+            <jsp:doBody/>
+        </main>
+      </div>
     <% } %>
   </body>
 </html>

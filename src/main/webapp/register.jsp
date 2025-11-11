@@ -19,7 +19,7 @@
     color: #6b7280;
   }
 </style>
-  <div class="flex flex-col text-left w-[550px] rounded-md shadow-md p-8 bg-white">
+  <div class="flex flex-col text-left w-[550px] rounded-md shadow-md p-8 bg-white m-auto">
     <div class="mb-6 w-full">
       <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight">
         회원가입
