@@ -80,6 +80,11 @@
       <div id="<%=rid%>"></div>
       <jsp:doBody/>
     <% } else { %>
+      <% 
+        String currentURI = req.getRequestURI();
+        boolean hideHeader = currentURI.endsWith("/login.jsp") || currentURI.endsWith("/register.jsp");
+      %>
+      <% if (!hideHeader) { %>
       <header class="h-16 bg-primary-100 shadow-md">
         <div class="flex justify-between items-center w-full px-6 h-full">
           <!-- Left: Logo and Title -->
@@ -116,6 +121,7 @@
           <% } %>
         </div>
       </header>
+      <% } %>
       <main class="flex-1 flex justify-center items-center">
         <jsp:doBody/>
       </main>
