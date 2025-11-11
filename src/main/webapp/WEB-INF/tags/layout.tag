@@ -126,28 +126,28 @@
             </div>
             <ul class="space-y-1 p-2">
                 <%-- Dynamic Menu Items --%>
-                <% if ("admin".equalsIgnoreCase(role)) { %>
-                <li>
-                    <a href="<%=ctx%>/teacher/studentList" class="group flex items-center gap-3 rounded-md px-3 py-2 text-sm outline-none text-white/90 hover:bg-primary-600 hover:text-white">
+        <% if ("admin".equalsIgnoreCase(role)) { %>
+        <li>
+          <a href="<%=ctx%>/teacher/studentList" class="group flex items-center gap-3 rounded-md px-3 py-2 text-sm outline-none <%= req.getRequestURI().endsWith("student-list.jsp") ? "bg-primary-600 text-white" : "text-white/90" %> hover:bg-primary-600 hover:text-white">
                     <i data-lucide="users" class="h-5 w-5"></i>
                     <span class="truncate">학생관리</span>
                     </a>
                 </li>
                 <li>
-                    <a href="<%=ctx%>/attendanceList" class="group flex items-center gap-3 rounded-md px-3 py-2 text-sm outline-none text-white/90 hover:bg-primary-600 hover:text-white">
+          <a href="<%=ctx%>/teacher/attendanceList" class="group flex items-center gap-3 rounded-md px-3 py-2 text-sm outline-none <%= req.getRequestURI().endsWith("attendance-list.jsp") || req.getRequestURI().endsWith("attendance-code.jsp") ? "bg-primary-600 text-white" : "text-white/90" %> hover:bg-primary-600 hover:text-white">
                     <i data-lucide="calendar-check" class="h-5 w-5"></i>
                     <span class="truncate">출석관리</span>
                     </a>
                 </li>
                 <% } else if ("student".equalsIgnoreCase(role)) { %>
                 <li>
-                    <a href="<%=ctx%>/student/attendanceList" class="group flex items-center gap-3 rounded-md px-3 py-2 text-sm outline-none text-white/90 hover:bg-primary-600 hover:text-white">
+          <a href="<%=ctx%>/student/attendanceList" class="group flex items-center gap-3 rounded-md px-3 py-2 text-sm outline-none <%= req.getRequestURI().endsWith("/attendance-list.jsp") ? "bg-primary-600 text-white" : "text-white/90" %> hover:bg-primary-600 hover:text-white">
                     <i data-lucide="calendar-check" class="h-5 w-5"></i>
                     <span class="truncate">출결 현황</span>
                     </a>
                 </li>
                 <li>
-                    <a href="<%=ctx%>/student/attendance-check.jsp" class="group flex items-center gap-3 rounded-md px-3 py-2 text-sm outline-none text-white/90 hover:bg-primary-600 hover:text-white">
+          <a href="<%=ctx%>/student/attendance-check.jsp" class="group flex items-center gap-3 rounded-md px-3 py-2 text-sm outline-none <%= req.getRequestURI().endsWith("/student/attendance-check.jsp") ? "bg-primary-600 text-white" : "text-white/90" %> hover:bg-primary-600 hover:text-white">
                     <i data-lucide="clipboard-check" class="h-5 w-5"></i>
                     <span class="truncate">출석하기</span>
                     </a>
