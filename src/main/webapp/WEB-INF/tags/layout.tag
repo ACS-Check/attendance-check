@@ -85,41 +85,92 @@
         boolean hideHeader = currentURI.endsWith("/login.jsp") || currentURI.endsWith("/register.jsp");
       %>
       <% if (!hideHeader) { %>
-      <header class="h-16 bg-primary-100 shadow-md">
-        <div class="flex justify-between items-center w-full px-6 h-full">
-          <!-- Left: Logo and Title -->
-          <div class="flex items-center space-x-4">
-            <img src="<%=ctx%>/static/icon-aws.svg" alt="Logo" class="h-8 w-8">
-            <span class="text-black font-bold text-lg">AWS Cloud School</span>
-          </div>
-
-          <!-- Right: User Info and Tooltip -->
-          <% if (userName != null) { %>
-            <div class="relative">
-              <button id="user-menu" class="text-black font-medium flex items-center space-x-2">
-                <span>
-                  <%= userName %> (
-                  <% if ("admin".equalsIgnoreCase(role)) { %>
-                    강사
-                  <% } else if ("student".equalsIgnoreCase(role)) { %>
-                    학생
-                  <% } %>
-                  )
-                </span>
-                <i data-lucide="chevron-down" class="w-4 h-4"></i>
-              </button>
-              <div id="tooltip-menu" class="hidden absolute right-0 top-8 w-48 bg-white rounded-md shadow-lg">
-                <a href="<%=ctx%>/logout" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Logout</a>
+      <header class="min-h-screen w-full flex flex-col md:flex-row">
+        <!-- Navigation Menu -->
+        <nav class="bg-primary-500 text-white w-full md:w-56 flex-shrink-0">
+          <div class="h-16 flex items-center justify-between px-4 text-lg font-semibold tracking-tight">
+            <div class="flex items-center gap-3 justify-between w-full">
+              <div class="rounded-md bg-white p-1">
+                <img
+                  src="<%=ctx%>/static/icon-aws.svg"
+                  alt="AWS Cloud School"
+                  class="h-8 w-8 block"
+                />
+              </div>
+              <div class="relative" id="user-menu-container">
+                <button
+                  id="user-menu-button"
+                  class="flex items-center gap-2 rounded-md bg-white/30 px-3 py-1 text-sm hover:bg-white/20 focus:outline-none text-black box-shadow-md"
+                >
+                  <span class="truncate"><%= userName != null ? userName : "사용자" %>
+                    <% if (!"student".equalsIgnoreCase(role)) { %>
+                      (<%= "admin".equalsIgnoreCase(role) ? "관리자" : role %>)
+                    <% } %>
+                  </span>
+                  <i data-lucide="chevron-down" class="w-4 h-4"></i>
+                </button>
+                <div
+                  id="user-menu-dropdown"
+                  class="hidden absolute right-0 mt-2 max-w-30 rounded-md bg-white text-black shadow-lg z-20"
+                >
+                  <a
+                    href="<%=ctx%>/logout"
+                    class="block px-4 py-2 text-sm hover:bg-gray-100 rounded-md text-right whitespace-nowrap"
+                  >
+                    로그아웃
+                  </a>
+                </div>
               </div>
             </div>
-            <script>
-              document.getElementById('user-menu').addEventListener('click', function () {
-                const tooltip = document.getElementById('tooltip-menu');
-                tooltip.classList.toggle('hidden');
-              });
-            </script>
-          <% } %>
-        </div>
+          </div>
+          <ul class="space-y-1 p-2">
+            <%-- Dynamic Menu Items --%>
+            <% if ("admin".equalsIgnoreCase(role)) { %>
+              <li>
+                <a href="<%=ctx%>/students" class="group flex items-center gap-3 rounded-md px-3 py-2 text-sm outline-none text-white/90 hover:bg-primary-600 hover:text-white">
+                  <i data-lucide="users" class="h-5 w-5"></i>
+                  <span class="truncate">학생관리</span>
+                </a>
+              </li>
+              <li>
+                <a href="<%=ctx%>/attendance" class="group flex items-center gap-3 rounded-md px-3 py-2 text-sm outline-none text-white/90 hover:bg-primary-600 hover:text-white">
+                  <i data-lucide="calendar-check" class="h-5 w-5"></i>
+                  <span class="truncate">출석관리</span>
+                </a>
+              </li>
+            <% } else if ("student".equalsIgnoreCase(role)) { %>
+              <li>
+                <a href="<%=ctx%>/attendance" class="group flex items-center gap-3 rounded-md px-3 py-2 text-sm outline-none text-white/90 hover:bg-primary-600 hover:text-white">
+                  <i data-lucide="calendar-check" class="h-5 w-5"></i>
+                  <span class="truncate">출결 현황</span>
+                </a>
+              </li>
+              <li>
+                <a href="<%=ctx%>/attendance-enter" class="group flex items-center gap-3 rounded-md px-3 py-2 text-sm outline-none text-white/90 hover:bg-primary-600 hover:text-white">
+                  <i data-lucide="clipboard-check" class="h-5 w-5"></i>
+                  <span class="truncate">출석하기</span>
+                </a>
+              </li>
+            <% } %>
+          </ul>
+        </nav>
+        <script>
+          document.addEventListener("DOMContentLoaded", function () {
+            const userMenuButton = document.getElementById("user-menu-button");
+            const userMenuDropdown = document.getElementById("user-menu-dropdown");
+
+            userMenuButton.addEventListener("click", function () {
+              userMenuDropdown.classList.toggle("hidden");
+            });
+
+            document.addEventListener("click", function (event) {
+              const menuContainer = document.getElementById("user-menu-container");
+              if (!menuContainer.contains(event.target)) {
+                userMenuDropdown.classList.add("hidden");
+              }
+            });
+          });
+        </script>
       </header>
       <% } %>
       <main class="flex-1 flex justify-center items-center">
