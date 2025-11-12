@@ -174,7 +174,7 @@
             </script>
         </header>
         <% } %>
-        <main class="flex-1 flex flex-col p-6">
+        <main class="flex-1 flex flex-col p-6 justify-center items-center">
             <jsp:doBody/>
         </main>
       </div>
