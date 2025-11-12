@@ -67,12 +67,13 @@
       }
 
       try {
-        const response = await fetch('teacher/code', {
+        const ctx = '${pageContext.request.contextPath}';
+        const response = await fetch(ctx + '/teacher/code', {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/x-www-form-urlencoded',
           },
-          body: JSON.stringify({ validMinutes }),
+          body: new URLSearchParams({ validMinutes: String(validMinutes) }),
         });
 
         if (response.ok) {

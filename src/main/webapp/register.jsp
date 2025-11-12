@@ -27,7 +27,7 @@
     </div>
 
     <div class="w-full">
-      <form class="space-y-6" method="post" action="register">
+  <form class="space-y-6" method="post" action="${pageContext.request.contextPath}/register">
         <div class="space-y-1">
           <div class="mb-1 flex items-center justify-between">
             <label for="username" class="block text-sm font-semibold text-gray-800">
@@ -138,7 +138,7 @@
             가입
           </button>
           <a
-            href="./login"
+            href="${pageContext.request.contextPath}/login.jsp"
             class="ml-4 w-full text-center rounded-md bg-gray-100 py-3 text-gray-700 font-semibold shadow-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300"
           >
             로그인

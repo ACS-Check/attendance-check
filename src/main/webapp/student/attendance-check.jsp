@@ -46,7 +46,8 @@
       const attendanceCode = document.getElementById('attendanceCode').value;
 
       try {
-        const response = await fetch('attend/mark', {
+        const ctx = '${pageContext.request.contextPath}';
+        const response = await fetch(ctx + '/attend/mark', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
