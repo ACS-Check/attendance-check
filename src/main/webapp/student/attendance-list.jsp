@@ -28,7 +28,6 @@
             <th class="px-3 py-2 border">날짜</th>
             <th class="px-3 py-2 border">시간</th>
             <th class="px-3 py-2 border">상태</th>
-            <th class="px-3 py-2 border">코드 ID</th>
           </tr>
         </thead>
         <tbody id="attBody">
@@ -39,12 +38,11 @@
                 <td class="px-3 py-2 border">${r.attendDate}</td>
                 <td class="px-3 py-2 border">${r.attendTime}</td>
                 <td class="px-3 py-2 border">${r.status}</td>
-                <td class="px-3 py-2 border">${r.codeId}</td>
               </tr>
             </c:forEach>
           </c:when>
           <c:otherwise>
-            <tr><td colspan="4" class="px-3 py-4 text-center text-gray-500">데이터가 없습니다.</td></tr>
+            <tr><td colspan="3" class="px-3 py-4 text-center text-gray-500">데이터가 없습니다.</td></tr>
           </c:otherwise>
         </c:choose>
         </tbody>
@@ -79,23 +77,23 @@
       try {
   // 컨텍스트 패스: JSTL/EL 사용 (스크립틀릿 금지 환경 대응)
   const ctx = '${pageContext.request.contextPath}';
-        attBody.innerHTML = '<tr><td colspan="4" class="px-3 py-4 text-center text-gray-500">불러오는 중...</td></tr>';
+        attBody.innerHTML = '<tr><td colspan="3" class="px-3 py-4 text-center text-gray-500">불러오는 중...</td></tr>';
         const res = await fetch(ctx + '/attend/list?month=' + encodeURIComponent(month), { credentials: 'same-origin' });
         let data;
         if (!res.ok) {
           const txt = await res.text();
-          attBody.innerHTML = '<tr><td colspan="4" class="px-3 py-4 text-center text-red-600">불러오기 실패 (' + res.status + ')<br/><small>' + (txt || '').substring(0,120) + '</small></td></tr>';
+          attBody.innerHTML = '<tr><td colspan="3" class="px-3 py-4 text-center text-red-600">불러오기 실패 (' + res.status + ')<br/><small>' + (txt || '').substring(0,120) + '</small></td></tr>';
           return;
         }
         try {
           data = await res.json();
         } catch (jsonErr) {
           const txt = await res.text();
-          attBody.innerHTML = '<tr><td colspan="4" class="px-3 py-4 text-center text-red-600">응답 파싱 오류<br/><small>' + (txt || '').substring(0,120) + '</small></td></tr>';
+          attBody.innerHTML = '<tr><td colspan="3" class="px-3 py-4 text-center text-red-600">응답 파싱 오류<br/><small>' + (txt || '').substring(0,120) + '</small></td></tr>';
           return;
         }
         if (!Array.isArray(data) || data.length === 0) {
-          attBody.innerHTML = '<tr><td colspan="4" class="px-3 py-4 text-center text-gray-500">해당 월 출석 기록이 없습니다.</td></tr>';
+          attBody.innerHTML = '<tr><td colspan="3" class="px-3 py-4 text-center text-gray-500">해당 월 출석 기록이 없습니다.</td></tr>';
           presentCountEl.textContent = 0;
           lateCountEl.textContent = 0;
           return;
@@ -107,14 +105,13 @@
               '<td class="px-3 py-2 border">' + r.date + '</td>' +
               '<td class="px-3 py-2 border">' + r.time + '</td>' +
               '<td class="px-3 py-2 border">' + r.status + '</td>' +
-              '<td class="px-3 py-2 border">' + r.codeId + '</td>' +
             '</tr>';
         }).join('');
         presentCountEl.textContent = present;
         lateCountEl.textContent = late;
       } catch (e) {
         console.error(e);
-        attBody.innerHTML = '<tr><td colspan="4" class="px-3 py-4 text-center text-red-600">오류가 발생했습니다.</td></tr>';
+        attBody.innerHTML = '<tr><td colspan="3" class="px-3 py-4 text-center text-red-600">오류가 발생했습니다.</td></tr>';
       }
     }
 
