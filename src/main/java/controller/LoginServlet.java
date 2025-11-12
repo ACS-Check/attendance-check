@@ -3,7 +3,6 @@ package controller;
 import java.io.IOException;
 
 import dao.UserDAO;
-import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -50,10 +49,21 @@ public class LoginServlet extends HttpServlet {
             }
 
         } else {
-            // 로그인 실패 시 에러 메시지와 함께 로그인 폼으로
-            request.setAttribute("error", "아이디 또는 비밀번호가 잘못되었습니다.");
-            RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
-            rd.forward(request, response);
+            // 로그인 실패: 서블릿에서 직접 alert 후 로그인 페이지로 리다이렉트
+            response.setCharacterEncoding("UTF-8");
+            response.setContentType("text/html; charset=UTF-8");
+            String ctx = request.getContextPath();
+            String html = "<!DOCTYPE html>" +
+                    "<html lang=\"ko\"><head><meta charset=\"UTF-8\"/>" +
+                    // JS 비활성화 환경 대비
+                    "<noscript><meta http-equiv=\"refresh\" content=\"0; url=" + ctx + "/login.jsp\"/></noscript>" +
+                    "<title>로그인 실패</title></head><body>" +
+                    "<script>" +
+                    "alert('아이디 또는 비밀번호가 잘못되었습니다.');" +
+                    "window.location.replace('" + ctx + "/login.jsp');" +
+                    "</script>" +
+                    "</body></html>";
+            response.getWriter().write(html);
         }
     }
 
