@@ -50,6 +50,10 @@
         <p id="remainingTime" class="text-lg font-semibold text-gray-800 mt-2"></p>
       </div>
     </div>
+    <div class="mt-8 flex gap-6">
+      <a href="${pageContext.request.contextPath}/teacher/studentList" class="text-sm text-primary-700 hover:underline">학생 관리</a>
+      <a href="${pageContext.request.contextPath}/teacher/attendanceList" class="text-sm text-primary-700 hover:underline">출석 요약</a>
+    </div>
   </div>
 
   <script>
