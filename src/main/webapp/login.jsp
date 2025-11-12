@@ -9,7 +9,7 @@
     </div>
 
     <div class="w-full">
-      <form class="space-y-6" method="post" action="login">
+  <form class="space-y-6" method="post" action="${pageContext.request.contextPath}/login">
         <div class="space-y-1">
           <div class="mb-1 flex items-center justify-between">
             <label for="userId" class="block text-sm font-semibold text-gray-800">
@@ -62,7 +62,7 @@
             로그인
           </button>
           <a
-            href="register.jsp"
+            href="${pageContext.request.contextPath}/register.jsp"
             class="ml-4 w-full text-center rounded-md bg-gray-100 py-3 text-gray-700 font-semibold shadow-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300"
           >
             회원가입

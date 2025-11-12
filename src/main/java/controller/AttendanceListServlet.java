@@ -25,11 +25,27 @@ public class AttendanceListServlet extends HttpServlet {
             int userId = (Integer) session.getAttribute("user_id");
 
             String month = req.getParameter("month"); // 예: 2025-11
-            if (month == null || month.isBlank()) { resp.sendError(400, "MONTH_REQUIRED"); return; }
+            YearMonth ym;
+            try {
+                if (month == null || month.isBlank()) {
+                    ym = YearMonth.now(); // 기본 현재 월
+                } else {
+                    ym = YearMonth.parse(month.trim());
+                }
+            } catch (Exception e) {
+                resp.sendError(400, "INVALID_MONTH_FORMAT");
+                return;
+            }
 
-            YearMonth ym = YearMonth.parse(month);
-            List<AttendanceRecord> list = attDAO.findByUserAndMonth(userId, ym);
-            writeJson(list, resp);
+            try {
+                List<AttendanceRecord> list = attDAO.findByUserAndMonth(userId, ym);
+                writeJson(list, resp);
+            } catch (RuntimeException ex) {
+                resp.setStatus(500);
+                resp.setContentType("text/plain; charset=UTF-8");
+                String msg = ex.getMessage() == null ? ex.getClass().getSimpleName() : ex.getMessage();
+                resp.getWriter().print("SERVER_ERROR: " + msg);
+            }
             return;
         }
 
