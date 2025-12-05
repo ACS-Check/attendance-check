@@ -1,14 +1,16 @@
 package controller;
 
-import dao.AttendanceCodeDAO;
-import dao.AttendanceDAO;
-import model.AttendanceCode;
-import model.AttendanceRecord;
-
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.*;
 import java.io.IOException;
 import java.util.Optional;
+
+import dao.AttendanceCodeDAO;
+import dao.AttendanceDAO;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import model.AttendanceCode;
+import model.AttendanceRecord;
 
 @WebServlet(name="AttendServlet", urlPatterns={"/attend/mark"})
 public class AttendServlet extends HttpServlet {
@@ -17,12 +19,13 @@ public class AttendServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        HttpSession session = req.getSession(false);
-        if (session == null || session.getAttribute("user_id") == null) {
+        // AuthFilter에서 설정한 user_id attribute 가져오기
+        String userIdStr = (String) req.getAttribute("user_id");
+        if (userIdStr == null) {
             resp.sendError(401, "UNAUTHORIZED");
             return;
         }
-        int userId = (Integer) session.getAttribute("user_id");
+        int userId = Integer.parseInt(userIdStr);
 
         String codeValue = req.getParameter("code");
         if (codeValue == null || codeValue.isBlank()) {

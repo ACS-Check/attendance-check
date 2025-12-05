@@ -1,14 +1,16 @@
 package controller;
 
-import dao.AttendanceDAO;
-import model.AttendanceRecord;
-
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.*;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.List;
+
+import dao.AttendanceDAO;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import model.AttendanceRecord;
 
 @WebServlet(name="AttendanceListServlet", urlPatterns={"/attend/list","/teacher/daily"})
 public class AttendanceListServlet extends HttpServlet {
@@ -20,9 +22,10 @@ public class AttendanceListServlet extends HttpServlet {
         resp.setContentType("application/json; charset=UTF-8");
 
         if ("/attend/list".equals(path)) {
-            HttpSession session = req.getSession(false);
-            if (session == null || session.getAttribute("user_id") == null) { resp.sendError(401); return; }
-            int userId = (Integer) session.getAttribute("user_id");
+            // AuthFilter에서 설정한 user_id attribute 가져오기
+            String userIdStr = (String) req.getAttribute("user_id");
+            if (userIdStr == null) { resp.sendError(401); return; }
+            int userId = Integer.parseInt(userIdStr);
 
             String month = req.getParameter("month"); // 예: 2025-11
             YearMonth ym;

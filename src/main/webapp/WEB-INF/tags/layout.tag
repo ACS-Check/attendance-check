@@ -7,13 +7,31 @@
 <%
   jakarta.servlet.http.HttpServletRequest req = (jakarta.servlet.http.HttpServletRequest) request;
   String ctx = req.getContextPath();
-  jakarta.servlet.http.HttpSession s = req.getSession(false);
-  String role = s != null ? (String) s.getAttribute("role") : null;
-  Object uObj = s != null ? s.getAttribute("user") : null;
+  
+  // JWT 토큰에서 사용자 정보 가져오기
+  String token = util.JwtUtil.getTokenFromRequest(req);
+  String role = null;
+  String userId = null;
   String userName = null;
-  if (uObj instanceof model.User) {
-    userName = ((model.User) uObj).getName();
+  
+  if (token != null && util.JwtUtil.validateToken(token)) {
+    role = util.JwtUtil.getRoleFromToken(token);
+    userId = util.JwtUtil.getUserIdFromToken(token);
+    
+    // UserDAO로 사용자 이름 조회
+    if (userId != null) {
+      try {
+        dao.UserDAO userDAO = new dao.UserDAO();
+        model.User user = userDAO.findById(Integer.parseInt(userId));
+        if (user != null) {
+          userName = user.getName();
+        }
+      } catch (Exception e) {
+        // 오류 발생 시 기본값 사용
+      }
+    }
   }
+  
   boolean onlyRoot = rootOnly != null && rootOnly.booleanValue();
   String rid = (rootId != null && !rootId.isBlank()) ? rootId : "root";
   String pageTitle = (title != null && !title.isBlank()) ? title : "Attendance System";

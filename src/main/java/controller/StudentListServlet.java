@@ -1,17 +1,16 @@
 package controller;
 
-import dao.UserDAO;
-import model.User;
+import java.io.IOException;
+import java.util.List;
 
+import dao.UserDAO;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import java.io.IOException;
-import java.util.List;
+import model.User;
 
 /**
  * 학생 목록 관리 페이지
@@ -33,10 +32,9 @@ public class StudentListServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // RoleFilter에서 admin 확인된다고 가정
-        HttpSession session = req.getSession(false);
-        if (session == null || session.getAttribute("role") == null ||
-                !"admin".equalsIgnoreCase((String) session.getAttribute("role"))) {
+        // RoleFilter에서 admin 확인된다고 가정 (JWT 토큰 기반)
+        String role = (String) req.getAttribute("role");
+        if (role == null || !"admin".equalsIgnoreCase(role)) {
             resp.sendRedirect(req.getContextPath() + "/login.jsp");
             return;
         }
@@ -69,10 +67,9 @@ public class StudentListServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // Admin check
-        HttpSession session = req.getSession(false);
-        if (session == null || session.getAttribute("role") == null ||
-                !"admin".equalsIgnoreCase((String) session.getAttribute("role"))) {
+        // Admin check (JWT 토큰 기반)
+        String role = (String) req.getAttribute("role");
+        if (role == null || !"admin".equalsIgnoreCase(role)) {
             resp.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }

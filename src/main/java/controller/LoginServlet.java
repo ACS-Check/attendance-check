@@ -5,17 +5,18 @@ import java.io.IOException;
 import dao.UserDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import model.User;
+import util.JwtUtil;
 import util.PasswordUtil;
 
 /**
  * 로그인 요청 처리 서블릿
  * - POST /login
- * - 세션 생성 및 권한에 따른 리다이렉트
+ * - JWT 토큰 생성 및 쿠키 설정, 권한에 따른 리다이렉트
  */
 @WebServlet(name = "LoginServlet", urlPatterns = {"/login"})
 public class LoginServlet extends HttpServlet {
@@ -33,11 +34,16 @@ public class LoginServlet extends HttpServlet {
 
         if (user != null && PasswordUtil.checkPassword(password, user.getPassword())) {
 
-            // ✅ 세션 생성 및 공통 키 저장 (필터/출석 시스템과 일치)
-            HttpSession session = request.getSession();
-            session.setAttribute("user", user); // Add user object for AuthFilter compatibility
-            session.setAttribute("user_id", user.getUserId());  // AuthFilter에서 확인
-            session.setAttribute("role", user.getRole());        // RoleFilter에서 확인
+            // ✅ JWT 토큰 생성
+            String token = JwtUtil.generateToken(String.valueOf(user.getUserId()), user.getRole());
+            
+            // ✅ 쿠키에 토큰 저장 (HttpOnly, Secure 옵션 설정)
+            Cookie tokenCookie = new Cookie(JwtUtil.getTokenCookieName(), token);
+            tokenCookie.setHttpOnly(true);  // JavaScript 접근 방지 (XSS 방어)
+            tokenCookie.setPath(request.getContextPath() + "/");
+            tokenCookie.setMaxAge(24 * 60 * 60);  // 24시간
+            // tokenCookie.setSecure(true);  // HTTPS 환경에서만 활성화
+            response.addCookie(tokenCookie);
 
             // ✅ 역할에 따라 리다이렉트 분기
             if ("admin".equalsIgnoreCase(user.getRole())) {

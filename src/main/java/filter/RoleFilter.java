@@ -1,13 +1,20 @@
 package filter;
 
-import jakarta.servlet.*;
-import jakarta.servlet.http.*;
 import java.io.IOException;
+
+import jakarta.servlet.Filter;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.FilterConfig;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * RoleFilter
  * - 관리자(교사) 권한 확인
- * - 세션의 role 값이 'admin'이 아닐 경우 접근 불가
+ * - JWT 토큰의 role 값이 'admin'이 아닐 경우 접근 불가
  */
 public class RoleFilter implements Filter {
 
@@ -18,21 +25,13 @@ public class RoleFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
 
-        // ✅ 세션 확인 (로그인 여부)
-        HttpSession session = req.getSession(false);
-        if (session == null) {
-            // 로그인 안 된 상태 → 로그인 페이지로 이동
-            res.sendRedirect(req.getContextPath() + "/login.jsp");
-            return;
-        }
-
-        // ✅ 세션에서 role 가져오기
-        String role = (String) session.getAttribute("role");
+        // ✅ AuthFilter에서 설정한 role attribute 가져오기
+        String role = (String) req.getAttribute("role");
 
         // ✅ 권한 확인 (role이 'admin'이 아닐 경우 접근 제한)
         if (role == null || !"admin".equalsIgnoreCase(role)) {
             // 일반 학생이면 학생 페이지로 리다이렉트
-            res.sendRedirect(req.getContextPath() + "/student.jsp");
+            res.sendRedirect(req.getContextPath() + "/student/attendanceList");
             return;
         }
 

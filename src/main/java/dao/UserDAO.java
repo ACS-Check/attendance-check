@@ -1,12 +1,15 @@
 package dao;
 
-import model.User;
-import util.PasswordUtil;
-
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import model.User;
+import util.PasswordUtil;
 
 /**
  * UserDAO
@@ -50,6 +53,30 @@ public class UserDAO {
             }
         } catch (SQLException e) {
             throw new RuntimeException("UserDAO.findByUsername failed", e);
+        }
+        return null;
+    }
+
+    /** user_id로 회원 조회 (JWT 토큰용) */
+    public User findById(int userId) {
+        String sql = "SELECT user_id, username, password, name, role, created_at FROM users WHERE user_id=?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, userId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    User u = new User();
+                    u.setUserId(rs.getInt("user_id"));
+                    u.setUsername(rs.getString("username"));
+                    u.setPassword(rs.getString("password"));
+                    u.setName(rs.getString("name"));
+                    u.setRole(rs.getString("role"));
+                    u.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
+                    return u;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("UserDAO.findById failed", e);
         }
         return null;
     }

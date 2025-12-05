@@ -1,11 +1,13 @@
 package controller;
 
-import dao.AttendanceCodeDAO;
-import model.AttendanceCode;
-
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.*;
 import java.io.IOException;
+
+import dao.AttendanceCodeDAO;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import model.AttendanceCode;
 
 @WebServlet(name="CreateCodeServlet", urlPatterns={"/teacher/code"})
 public class CreateCodeServlet extends HttpServlet {
@@ -13,15 +15,6 @@ public class CreateCodeServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        // RoleFilter에서 admin 확인한다고 가정. 없으면 아래 주석 해제해서 직접 체크
-        /*
-        HttpSession session = req.getSession(false);
-        if (session == null || !"admin".equals(session.getAttribute("role"))) {
-            resp.sendError(403, "FORBIDDEN");
-            return;
-        }
-        */
-
         String minutesParam = req.getParameter("validMinutes");
         int minutes = 10; // 기본 10분
         try { if (minutesParam != null) minutes = Integer.parseInt(minutesParam); } catch (NumberFormatException ignored) {}

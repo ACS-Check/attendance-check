@@ -1,13 +1,21 @@
 package filter;
 
-import jakarta.servlet.*;
-import jakarta.servlet.http.*;
 import java.io.IOException;
+
+import jakarta.servlet.Filter;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import util.JwtUtil;
 
 /**
  * AuthFilter
- * - 로그인 여부 확인
- * - 세션에 user가 없으면 /login.jsp 로 리다이렉트
+ * - JWT 토큰 기반 인증 확인
+ * - 토큰이 없거나 유효하지 않으면 /login.jsp 로 리다이렉트
+ * - 유효한 토큰이 있으면 request에 userId와 role을 attribute로 설정
  */
 public class AuthFilter implements Filter {
 
@@ -17,9 +25,6 @@ public class AuthFilter implements Filter {
 
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
-
-        HttpSession session = req.getSession(false);
-        boolean loggedIn = (session != null && session.getAttribute("user") != null);
 
         String uri = req.getRequestURI();
 
@@ -31,7 +36,28 @@ public class AuthFilter implements Filter {
                           uri.endsWith("/register") ||
                           uri.contains("/static/");
 
-        if (loggedIn || allowed) {
+        if (allowed) {
+            chain.doFilter(request, response);
+            return;
+        }
+
+        // ✅ JWT 토큰 검증
+        String token = JwtUtil.getTokenFromRequest(req);
+        boolean loggedIn = false;
+
+        if (token != null && JwtUtil.validateToken(token)) {
+            // 토큰이 유효하면 사용자 정보를 request attribute에 설정
+            String userId = JwtUtil.getUserIdFromToken(token);
+            String role = JwtUtil.getRoleFromToken(token);
+            
+            if (userId != null && role != null) {
+                req.setAttribute("user_id", userId);
+                req.setAttribute("role", role);
+                loggedIn = true;
+            }
+        }
+
+        if (loggedIn) {
             chain.doFilter(request, response);
         } else {
             res.sendRedirect(req.getContextPath() + "/login.jsp");

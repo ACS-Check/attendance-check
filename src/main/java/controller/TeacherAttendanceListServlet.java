@@ -9,7 +9,6 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import model.AttendanceSummary;
 
 @WebServlet(name="TeacherAttendanceListServlet", urlPatterns={"/teacher/attendanceList"})
@@ -18,8 +17,9 @@ public class TeacherAttendanceListServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        HttpSession session = req.getSession(false);
-        if (session == null || session.getAttribute("user_id") == null || !"admin".equals(session.getAttribute("role"))) {
+        // RoleFilter에서 admin 확인된다고 가정 (JWT 토큰 기반)
+        String role = (String) req.getAttribute("role");
+        if (role == null || !"admin".equals(role)) {
             resp.sendRedirect(req.getContextPath() + "/login.jsp");
             return;
         }
