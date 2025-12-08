@@ -4,9 +4,10 @@
 <t:layout title="출석 코드 입력">
   <div class="flex flex-col flex-1 text-left w-full px-6 py-8">
     <div class="mb-6 w-full">
-      <h1 class="text-2xl font-extrabold text-gray-900 tracking-tight">
+      <h1 class="text-2xl font-bold text-gray-900 tracking-tight">
         출석 코드 입력
       </h1>
+      <div class="h-1 w-16 bg-primary-500 mt-2"></div>
     </div>
 
     <div class="w-full">
@@ -22,7 +23,7 @@
             name="code"
             type="text"
             placeholder="출석 코드를 입력하세요"
-            class="w-full rounded-md border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder-gray-400 shadow-sm focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-200"
+            class="w-full rounded-lg border-2 border-gray-300 bg-white px-4 py-3 text-base text-gray-900 placeholder-gray-400 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-200 transition-colors duration-200"
             required
           />
         </div>
@@ -30,7 +31,7 @@
         <div class="flex items-center justify-between">
           <button
             type="submit"
-            class="w-full rounded-lg bg-primary-500 py-3.5 text-white font-bold hover:bg-primary-600 shadow-lg transform hover:scale-[1.02] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-200"
+            class="w-full rounded-lg bg-primary-500 py-3.5 text-white text-base font-bold hover:bg-primary-600 shadow-md hover:shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-300"
           >
             출석 확인
           </button>

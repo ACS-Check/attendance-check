@@ -20,12 +20,13 @@
     color: #6b7280;
   }
 </style>
-  <div class="flex flex-col text-left w-full max-w-md px-6 py-8">
-    <div class="mb-8 w-full">
-      <h1 class="text-4xl font-black text-gray-900 tracking-tight">
+  <div class="flex flex-col text-left w-full max-w-md px-8 py-10 bg-white rounded-2xl shadow-2xl border-4 border-primary-500 relative overflow-hidden">
+    <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-primary-400 via-primary-500 to-primary-600 animate-pulse"></div>
+    <div class="mb-6 w-full">
+      <h1 class="text-3xl font-bold text-gray-900 tracking-tight">
         회원가입
       </h1>
-      <div class="h-1 w-20 bg-primary-500 rounded-full mt-3"></div>
+      <div class="h-1 w-16 bg-primary-500 mt-3"></div>
     </div>
 
     <div class="w-full">
@@ -42,15 +43,15 @@
               name="username"
               type="text"
               placeholder="아이디를 입력하세요"
-              class="flex-1 rounded-lg border-2 border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder-gray-400 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-200 transition-all"
+              class="flex-1 rounded-lg border-2 border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder-gray-400 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-200 transition-colors duration-200"
               required
             />
             <button
               type="button"
               id="checkUsernameBtn"
-              class="px-5 py-3 bg-[#232f3e] text-white rounded-lg font-bold hover:bg-[#37475a] transition-all duration-200 focus:outline-none whitespace-nowrap"
+              class="px-5 py-3 bg-gray-700 text-white rounded-lg font-bold hover:bg-gray-800 shadow-md transition-all duration-200 focus:outline-none whitespace-nowrap"
             >
-              중복 체크
+              중복확인
             </button>
           </div>
           <div id="usernameCheckMessage" class="text-sm mt-1"></div>
@@ -67,7 +68,7 @@
             name="password"
             type="password"
             placeholder="비밀번호를 입력하세요"
-            class="w-full rounded-lg border-2 border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder-gray-400 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-200 transition-all"
+            class="w-full rounded-lg border-2 border-gray-300 bg-gradient-to-br from-white to-gray-50 px-4 py-3.5 text-gray-900 placeholder-gray-400 shadow-md focus:border-primary-500 focus:outline-none focus:ring-4 focus:ring-primary-300 focus:shadow-xl focus:scale-[1.02] transition-all duration-300"
             required
           />
         </div>
@@ -83,7 +84,7 @@
             name="name"
             type="text"
             placeholder="이름을 입력하세요"
-            class="w-full rounded-lg border-2 border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder-gray-400 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-200 transition-all"
+            class="w-full rounded-lg border-2 border-gray-300 bg-gradient-to-br from-white to-gray-50 px-4 py-3.5 text-gray-900 placeholder-gray-400 shadow-md focus:border-primary-500 focus:outline-none focus:ring-4 focus:ring-primary-300 focus:shadow-xl focus:scale-[1.02] transition-all duration-300"
             required
           />
         </div>
@@ -145,13 +146,14 @@
         <div class="flex items-center justify-between">
           <button
             type="submit"
-            class="w-full rounded-lg bg-primary-500 py-3.5 text-white font-bold shadow-lg hover:bg-primary-600 hover:shadow-xl transform hover:scale-[1.02] transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-primary-200"
+            class="w-full rounded-xl bg-gradient-to-r from-primary-500 to-primary-600 py-4 text-white text-lg font-black hover:from-primary-600 hover:to-primary-700 shadow-2xl shadow-primary-400/50 transform hover:scale-105 hover:-translate-y-1 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-primary-300 relative overflow-hidden group"
           >
-            가입
+            <span class="relative z-10">가입하기</span>
+            <div class="absolute inset-0 bg-gradient-to-r from-white/0 via-white/30 to-white/0 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-700"></div>
           </button>
           <a
             href="${pageContext.request.contextPath}/login"
-            class="ml-4 w-full text-center rounded-lg bg-[#232f3e] py-3.5 text-white font-bold hover:bg-[#37475a] transform hover:scale-[1.02] transition-all duration-200 focus:outline-none"
+            class="ml-4 w-full text-center rounded-lg bg-gray-700 py-3.5 text-white font-bold hover:bg-gray-800 shadow-md hover:shadow-lg transition-all duration-200 focus:outline-none"
           >
             로그인
           </a>
