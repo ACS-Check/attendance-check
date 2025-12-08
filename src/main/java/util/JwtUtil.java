@@ -19,7 +19,9 @@ import jakarta.servlet.http.HttpServletRequest;
 public class JwtUtil {
 
     // ⚠️ 운영 환경에서는 환경 변수나 안전한 저장소에서 관리해야 함
-    private static final String SECRET_KEY = "your-256-bit-secret-key-change-this-in-production-environment-please";
+    private static final String SECRET_KEY = System.getenv("JWT_SECRET_KEY") != null 
+            ? System.getenv("JWT_SECRET_KEY") 
+            : "acs-check-attendance-system-secret-key-2025";
     private static final long EXPIRATION_TIME = 24 * 60 * 60 * 1000; // 24시간
     private static final String TOKEN_COOKIE_NAME = "auth_token";
 
