@@ -62,11 +62,11 @@ public class LoginServlet extends HttpServlet {
             String html = "<!DOCTYPE html>" +
                     "<html lang=\"ko\"><head><meta charset=\"UTF-8\"/>" +
                     // JS 비활성화 환경 대비
-                    "<noscript><meta http-equiv=\"refresh\" content=\"0; url=" + ctx + "/login.jsp\"/></noscript>" +
+                    "<noscript><meta http-equiv=\"refresh\" content=\"0; url=" + ctx + "/login\"/></noscript>" +
                     "<title>로그인 실패</title></head><body>" +
                     "<script>" +
                     "alert('아이디 또는 비밀번호가 잘못되었습니다.');" +
-                    "window.location.replace('" + ctx + "/login.jsp');" +
+                    "window.location.replace('" + ctx + "/login');" +
                     "</script>" +
                     "</body></html>";
             response.getWriter().write(html);
@@ -76,6 +76,6 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.sendRedirect("login.jsp");
+        request.getRequestDispatcher("/login.jsp").forward(request, response);
     }
 }

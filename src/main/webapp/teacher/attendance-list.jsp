@@ -38,7 +38,7 @@
         </div>
 
         <div class="mt-6 flex justify-end gap-2">
-            <a href="${pageContext.request.contextPath}/teacher/attendance-code.jsp"
+            <a href="${pageContext.request.contextPath}/teacher/attendanceCode"
                  class="inline-flex items-center rounded-md bg-primary-500 text-white px-4 py-2 font-semibold shadow-md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-300">
                 출석 코드 생성
             </a>

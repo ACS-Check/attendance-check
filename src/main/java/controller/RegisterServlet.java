@@ -33,7 +33,7 @@ public class RegisterServlet extends HttpServlet {
         // 중복 확인
         if (dao.findByUsername(username) != null) {
             request.setAttribute("error", "이미 존재하는 사용자명입니다.");
-            RequestDispatcher rd = request.getRequestDispatcher("register.jsp");
+            RequestDispatcher rd = request.getRequestDispatcher("/register.jsp");
             rd.forward(request, response);
             return;
         }
@@ -47,10 +47,10 @@ public class RegisterServlet extends HttpServlet {
 
         boolean success = dao.insertUser(user);
         if (success) {
-            response.sendRedirect("login.jsp");
+            response.sendRedirect(request.getContextPath() + "/login");
         } else {
             request.setAttribute("error", "회원가입에 실패했습니다.");
-            RequestDispatcher rd = request.getRequestDispatcher("register.jsp");
+            RequestDispatcher rd = request.getRequestDispatcher("/register.jsp");
             rd.forward(request, response);
         }
     }
@@ -58,6 +58,6 @@ public class RegisterServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.sendRedirect("register.jsp");
+        request.getRequestDispatcher("/register.jsp").forward(request, response);
     }
 }

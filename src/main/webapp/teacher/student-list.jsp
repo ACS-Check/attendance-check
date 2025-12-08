@@ -10,7 +10,7 @@
         <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight">학생 목록</h1>
         <p class="text-sm text-gray-600 mt-1">등록된 학생 계정을 관리합니다.</p>
       </div>
-      <a href="${pageContext.request.contextPath}/teacher/attendance-code.jsp" class="text-sm text-primary-700 hover:underline">뒤로가기</a>
+      <a href="${pageContext.request.contextPath}/teacher/attendanceCode" class="text-sm text-primary-700 hover:underline">뒤로가기</a>
     </div>
 
     <!-- 검색/페이징 -->

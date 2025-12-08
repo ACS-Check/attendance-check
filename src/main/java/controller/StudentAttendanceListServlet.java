@@ -28,7 +28,7 @@ public class StudentAttendanceListServlet extends HttpServlet {
         String role = (String) req.getAttribute("role");
         
         if (userIdStr == null) {
-            resp.sendRedirect(req.getContextPath() + "/login.jsp");
+            resp.sendRedirect(req.getContextPath() + "/login");
             return;
         }
         
@@ -46,7 +46,7 @@ public class StudentAttendanceListServlet extends HttpServlet {
             req.setAttribute("initialList", initialList);
             req.setAttribute("initialMonth", ym.toString()); // e.g. 2025-11
         } catch (NumberFormatException e) {
-            resp.sendRedirect(req.getContextPath() + "/login.jsp");
+            resp.sendRedirect(req.getContextPath() + "/login");
             return;
         }
 

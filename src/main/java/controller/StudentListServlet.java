@@ -35,7 +35,7 @@ public class StudentListServlet extends HttpServlet {
         // RoleFilter에서 admin 확인된다고 가정 (JWT 토큰 기반)
         String role = (String) req.getAttribute("role");
         if (role == null || !"admin".equalsIgnoreCase(role)) {
-            resp.sendRedirect(req.getContextPath() + "/login.jsp");
+            resp.sendRedirect(req.getContextPath() + "/login");
             return;
         }
         String q = req.getParameter("q");

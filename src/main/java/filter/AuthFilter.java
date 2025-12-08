@@ -29,10 +29,7 @@ public class AuthFilter implements Filter {
         String uri = req.getRequestURI();
 
         // 로그인 / 회원가입 / 정적 파일은 필터 제외
-        boolean allowed = uri.endsWith("login.jsp") ||
-                          uri.endsWith("register.jsp") ||
-                          uri.endsWith("index.jsp") ||
-                          uri.endsWith("/login") ||
+        boolean allowed = uri.endsWith("/login") ||
                           uri.endsWith("/register") ||
                           uri.contains("/static/");
 
@@ -60,7 +57,7 @@ public class AuthFilter implements Filter {
         if (loggedIn) {
             chain.doFilter(request, response);
         } else {
-            res.sendRedirect(req.getContextPath() + "/login.jsp");
+            res.sendRedirect(req.getContextPath() + "/login");
         }
     }
 }

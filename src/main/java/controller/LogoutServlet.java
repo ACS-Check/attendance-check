@@ -29,6 +29,6 @@ public class LogoutServlet extends HttpServlet {
         tokenCookie.setHttpOnly(true);
         response.addCookie(tokenCookie);
 
-        response.sendRedirect("login.jsp");
+        response.sendRedirect(request.getContextPath() + "/login");
     }
 }

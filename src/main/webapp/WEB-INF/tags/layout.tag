@@ -152,7 +152,7 @@
                     </a>
                 </li>
                 <li>
-          <a href="<%=ctx%>/teacher/attendanceList" class="group flex items-center gap-3 rounded-md px-3 py-2 text-sm outline-none <%= req.getRequestURI().endsWith("attendance-list.jsp") || req.getRequestURI().endsWith("attendance-code.jsp") ? "bg-primary-600 text-white" : "text-white/90" %> hover:bg-primary-600 hover:text-white">
+          <a href="<%=ctx%>/teacher/attendanceList" class="group flex items-center gap-3 rounded-md px-3 py-2 text-sm outline-none <%= req.getRequestURI().contains("/teacher/attendance") ? "bg-primary-600 text-white" : "text-white/90" %> hover:bg-primary-600 hover:text-white">
                     <i data-lucide="calendar-check" class="h-5 w-5"></i>
                     <span class="truncate">출석관리</span>
                     </a>

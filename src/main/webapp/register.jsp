@@ -138,7 +138,7 @@
             가입
           </button>
           <a
-            href="${pageContext.request.contextPath}/login.jsp"
+            href="${pageContext.request.contextPath}/login"
             class="ml-4 w-full text-center rounded-md bg-gray-100 py-3 text-gray-700 font-semibold shadow-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300"
           >
             로그인

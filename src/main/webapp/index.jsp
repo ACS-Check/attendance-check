@@ -9,7 +9,7 @@
   }
   
   if (role == null) {
-    response.sendRedirect(request.getContextPath() + "/login.jsp");
+    response.sendRedirect(request.getContextPath() + "/login");
     return;
   }
   
@@ -24,5 +24,5 @@
   }
   
   // 알 수 없는 role 기본 처리
-  response.sendRedirect(request.getContextPath() + "/login.jsp");
+  response.sendRedirect(request.getContextPath() + "/login");
 %>
