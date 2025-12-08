@@ -7,7 +7,7 @@
   <div class="flex flex-col text-left w-full rounded-md shadow-md p-8 bg-white">
     <div class="mb-6 w-full flex items-center justify-between">
       <div>
-        <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight">학생 목록</h1>
+        <h1 class="text-2xl font-extrabold text-gray-900 tracking-tight">학생 목록</h1>
         <p class="text-sm text-gray-600 mt-1">등록된 학생 계정을 관리합니다.</p>
       </div>
       <a href="${pageContext.request.contextPath}/teacher/attendanceCode" class="text-sm text-primary-700 hover:underline">뒤로가기</a>

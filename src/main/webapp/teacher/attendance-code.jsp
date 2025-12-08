@@ -3,7 +3,7 @@
 <t:layout title="출석코드 생성">
   <div class="flex flex-col text-left w-full max-w-[550px] rounded-md shadow-md p-8 bg-white">
     <div class="mb-6 w-full">
-      <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight">
+      <h1 class="text-2xl font-extrabold text-gray-900 tracking-tight">
         출석코드 생성
       </h1>
     </div>
