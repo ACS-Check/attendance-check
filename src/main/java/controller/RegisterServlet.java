@@ -3,7 +3,6 @@ package controller;
 import java.io.IOException;
 
 import dao.UserDAO;
-import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -29,12 +28,20 @@ public class RegisterServlet extends HttpServlet {
         String role = request.getParameter("role"); // "student" or "admin"
 
         UserDAO dao = new UserDAO();
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html; charset=UTF-8");
+        String ctx = request.getContextPath();
 
         // 중복 확인
         if (dao.findByUsername(username) != null) {
-            request.setAttribute("error", "이미 존재하는 사용자명입니다.");
-            RequestDispatcher rd = request.getRequestDispatcher("/register.jsp");
-            rd.forward(request, response);
+            String html = "<!DOCTYPE html>" +
+                    "<html><head><meta charset=\"UTF-8\"/></head><body>" +
+                    "<script>" +
+                    "alert('이미 존재하는 사용자명입니다.');" +
+                    "history.back();" +
+                    "</script>" +
+                    "</body></html>";
+            response.getWriter().write(html);
             return;
         }
 
@@ -47,11 +54,23 @@ public class RegisterServlet extends HttpServlet {
 
         boolean success = dao.insertUser(user);
         if (success) {
-            response.sendRedirect(request.getContextPath() + "/login");
+            String html = "<!DOCTYPE html>" +
+                    "<html><head><meta charset=\"UTF-8\"/></head><body>" +
+                    "<script>" +
+                    "alert('회원가입이 완료되었습니다.');" +
+                    "window.location.href = '" + ctx + "/login';" +
+                    "</script>" +
+                    "</body></html>";
+            response.getWriter().write(html);
         } else {
-            request.setAttribute("error", "회원가입에 실패했습니다.");
-            RequestDispatcher rd = request.getRequestDispatcher("/register.jsp");
-            rd.forward(request, response);
+            String html = "<!DOCTYPE html>" +
+                    "<html><head><meta charset=\"UTF-8\"/></head><body>" +
+                    "<script>" +
+                    "alert('회원가입에 실패했습니다.');" +
+                    "history.back();" +
+                    "</script>" +
+                    "</body></html>";
+            response.getWriter().write(html);
         }
     }
 

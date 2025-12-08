@@ -28,9 +28,10 @@ public class AuthFilter implements Filter {
 
         String uri = req.getRequestURI();
 
-        // 로그인 / 회원가입 / 정적 파일은 필터 제외
+        // 로그인 / 회원가입 / API / 정적 파일은 필터 제외
         boolean allowed = uri.endsWith("/login") ||
                           uri.endsWith("/register") ||
+                          uri.contains("/api/") ||
                           uri.contains("/static/");
 
         if (allowed) {
