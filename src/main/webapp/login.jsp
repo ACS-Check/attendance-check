@@ -43,18 +43,6 @@
           />
         </div>
 
-        <div class="flex items-center gap-2 pt-1">
-          <input
-            id="remember"
-            name="remember"
-            type="checkbox"
-            class="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-600"
-          />
-          <label for="remember" class="text-sm text-gray-700">
-            아이디저장
-          </label>
-        </div>
-
         <div class="flex items-center justify-between">
           <button
             type="submit"
