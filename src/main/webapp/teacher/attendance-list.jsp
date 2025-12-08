@@ -3,15 +3,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <t:layout title="출석 요약">
-    <!-- 제목은 카드 바깥 상단에 배치 -->
-    <div class="w-full max-w-4xl mx-auto mb-4">
-        <h1 class="text-2xl font-extrabold text-gray-900 tracking-tight">출석 요약</h1>
-        <p class="muted">날짜별 출석 인원과 전체 학생 수</p>
-    </div>
-
     <div class="w-full max-w-4xl rounded-md shadow-md p-8 bg-white mx-auto">
+        <div class="mb-6 w-full">
+            <h1 class="text-2xl font-extrabold text-gray-900 tracking-tight">출석 요약</h1>
+            <p class="text-gray-600 text-sm">날짜별 출석 인원과 전체 학생 수</p>
+        </div>
 
-    <div class="overflow-x-auto">
+        <div class="overflow-x-auto">
             <table class="w-full text-sm text-left border border-gray-200 rounded-md">
                 <thead class="bg-gray-50 text-gray-600">
                     <tr>
