@@ -2,7 +2,7 @@
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
 <t:layout title="출석 코드 입력">
-  <div class="flex flex-col text-left w-full max-w-[550px] rounded-md shadow-md p-8 bg-white">
+  <div class="flex flex-col flex-1 text-left w-full px-6 py-8">
     <div class="mb-6 w-full">
       <h1 class="text-2xl font-extrabold text-gray-900 tracking-tight">
         출석 코드 입력
@@ -30,7 +30,7 @@
         <div class="flex items-center justify-between">
           <button
             type="submit"
-            class="w-full rounded-md bg-primary-600 py-3 text-white font-semibold shadow-md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-300"
+            class="w-full rounded-lg bg-primary-500 py-3.5 text-white font-bold hover:bg-primary-600 shadow-lg transform hover:scale-[1.02] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-200"
           >
             출석 확인
           </button>

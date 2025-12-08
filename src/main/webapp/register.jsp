@@ -20,18 +20,19 @@
     color: #6b7280;
   }
 </style>
-  <div class="flex flex-col text-left w-full max-w-[550px] rounded-md shadow-md p-8 bg-white m-auto">
-    <div class="mb-6 w-full">
-      <h1 class="text-2xl font-extrabold text-gray-900 tracking-tight">
+  <div class="flex flex-col text-left w-full max-w-md px-6 py-8">
+    <div class="mb-8 w-full">
+      <h1 class="text-4xl font-black text-gray-900 tracking-tight">
         회원가입
       </h1>
+      <div class="h-1 w-20 bg-primary-500 rounded-full mt-3"></div>
     </div>
 
     <div class="w-full">
   <form class="space-y-6" method="post" action="${pageContext.request.contextPath}/register">
         <div class="space-y-1">
           <div class="mb-1 flex items-center justify-between">
-            <label for="username" class="block text-sm font-semibold text-gray-800">
+            <label for="username" class="block text-sm font-bold text-gray-900">
               아이디
             </label>
           </div>
@@ -41,13 +42,13 @@
               name="username"
               type="text"
               placeholder="아이디를 입력하세요"
-              class="flex-1 rounded-md border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder-gray-400 shadow-sm focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-200"
+              class="flex-1 rounded-lg border-2 border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder-gray-400 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-200 transition-all"
               required
             />
             <button
               type="button"
               id="checkUsernameBtn"
-              class="px-4 py-3 bg-gray-600 text-white rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-300 whitespace-nowrap"
+              class="px-5 py-3 bg-[#232f3e] text-white rounded-lg font-bold hover:bg-[#37475a] transition-all duration-200 focus:outline-none whitespace-nowrap"
             >
               중복 체크
             </button>
@@ -57,7 +58,7 @@
 
         <div class="space-y-1">
           <div class="mb-1 flex items-center justify-between">
-            <label for="password" class="block text-sm font-semibold text-gray-800">
+            <label for="password" class="block text-sm font-bold text-gray-900">
               비밀번호
             </label>
           </div>
@@ -66,14 +67,14 @@
             name="password"
             type="password"
             placeholder="비밀번호를 입력하세요"
-            class="w-full rounded-md border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder-gray-400 shadow-sm focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-200"
+            class="w-full rounded-lg border-2 border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder-gray-400 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-200 transition-all"
             required
           />
         </div>
 
         <div class="space-y-1">
           <div class="mb-1 flex items-center justify-between">
-            <label for="name" class="block text-sm font-semibold text-gray-800">
+            <label for="name" class="block text-sm font-bold text-gray-900">
               이름
             </label>
           </div>
@@ -82,14 +83,14 @@
             name="name"
             type="text"
             placeholder="이름을 입력하세요"
-            class="w-full rounded-md border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder-gray-400 shadow-sm focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-200"
+            class="w-full rounded-lg border-2 border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder-gray-400 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-200 transition-all"
             required
           />
         </div>
 
         <div class="space-y-1">
           <div class="mb-1 flex items-center justify-between">
-            <label for="role" class="block text-sm font-semibold text-gray-800">
+            <label for="role" class="block text-sm font-bold text-gray-900">
               역할
             </label>
           </div>
@@ -144,13 +145,13 @@
         <div class="flex items-center justify-between">
           <button
             type="submit"
-            class="w-full rounded-md bg-primary-600 py-3 text-white font-semibold shadow-md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-300"
+            class="w-full rounded-lg bg-primary-500 py-3.5 text-white font-bold shadow-lg hover:bg-primary-600 hover:shadow-xl transform hover:scale-[1.02] transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-primary-200"
           >
             가입
           </button>
           <a
             href="${pageContext.request.contextPath}/login"
-            class="ml-4 w-full text-center rounded-md bg-gray-100 py-3 text-gray-700 font-semibold shadow-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300"
+            class="ml-4 w-full text-center rounded-lg bg-[#232f3e] py-3.5 text-white font-bold hover:bg-[#37475a] transform hover:scale-[1.02] transition-all duration-200 focus:outline-none"
           >
             로그인
           </a>

@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <t:layout title="출석 요약">
-    <div class="w-full max-w-4xl rounded-md shadow-md p-8 bg-white mx-auto">
+    <div class="flex flex-col flex-1 w-full px-6 py-8">
         <div class="mb-6 w-full">
             <h1 class="text-2xl font-extrabold text-gray-900 tracking-tight">출석 요약</h1>
             <p class="text-gray-600 text-sm">날짜별 출석 인원과 전체 학생 수</p>
@@ -37,7 +37,7 @@
 
         <div class="mt-6 flex justify-end gap-2">
             <a href="${pageContext.request.contextPath}/teacher/attendanceCode"
-                 class="inline-flex items-center rounded-md bg-primary-500 text-white px-4 py-2 font-semibold shadow-md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-300">
+                 class="inline-flex items-center rounded-lg bg-primary-500 px-6 py-3 text-white font-bold hover:bg-primary-600 shadow-lg transform hover:scale-[1.02] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-200">
                 출석 코드 생성
             </a>
         </div>
