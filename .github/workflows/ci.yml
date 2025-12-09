@@ -9,7 +9,7 @@ env:
   AWS_REGION: ap-northeast-2
   TOMCAT_ECR_REPO: check-tomcat
   NGINX_ECR_REPO: check-nginx
-  GITOPS_REPO: gschoi1224/attendance-check-gitops
+  GITOPS_REPO: ACS-Check/attendance-check-gitops
   GITOPS_MANIFEST_PATH: .
 
 jobs:
