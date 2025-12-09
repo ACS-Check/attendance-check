@@ -1,11 +1,11 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<t:layout title="통합 LOGIN">
+<t:layout title="로그인">
   <div class="flex flex-col text-left w-full max-w-[550px] rounded-md shadow-md p-8 bg-white m-auto">
     <div class="mb-6 w-full">
       <h1 class="text-2xl font-extrabold text-gray-900 tracking-tight">
-        통합 LOGIN
+        로그인
       </h1>
     </div>
 
