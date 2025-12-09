@@ -1,0 +1,185 @@
+name: CI - Build and Sync GitOps
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  AWS_REGION: ap-northeast-2
+  TOMCAT_ECR_REPO: check-tomcat
+  NGINX_ECR_REPO: check-nginx
+  GITOPS_REPO: gschoi1224/attendance-check-gitops
+  GITOPS_MANIFEST_PATH: .
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Detect changed files
+        id: changes
+        run: |
+          # Safe change detection
+          if [ "${{ github.event.before }}" == "0000000000000000000000000000000000000000" ] || [ -z "${{ github.event.before }}" ]; then
+            # First push or forced push - check all files
+            CHANGED_FILES=$(git ls-files)
+          else
+            CHANGED_FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
+          fi
+
+          echo "Changed files:"
+          echo "$CHANGED_FILES"
+
+          # Check if Tomcat-related files changed
+          if echo "$CHANGED_FILES" | grep -qE '^(src/|pom.xml|Dockerfile)'; then
+            echo "TOMCAT_CHANGED=true" >> $GITHUB_OUTPUT
+            echo "✅ Tomcat source changed"
+          else
+            echo "TOMCAT_CHANGED=false" >> $GITHUB_OUTPUT
+            echo "⏭️ Tomcat source unchanged"
+          fi
+
+          # Check if Nginx-related files changed
+          if echo "$CHANGED_FILES" | grep -qE '^nginx/'; then
+            echo "NGINX_CHANGED=true" >> $GITHUB_OUTPUT
+            echo "✅ Nginx source changed"
+          else
+            echo "NGINX_CHANGED=false" >> $GITHUB_OUTPUT
+            echo "⏭️ Nginx source unchanged"
+          fi
+
+      - name: Generate image tag
+        id: image-tag
+        run: |
+          SHORT_SHA=$(echo ${{ github.sha }} | cut -c1-7)
+          TIMESTAMP=$(date -u +%Y%m%d%H%M%S)
+          IMAGE_TAG="${TIMESTAMP}-${SHORT_SHA}"
+          echo "IMAGE_TAG=${IMAGE_TAG}" >> $GITHUB_OUTPUT
+          echo "SHORT_SHA=${SHORT_SHA}" >> $GITHUB_OUTPUT
+          echo "TIMESTAMP=${TIMESTAMP}" >> $GITHUB_OUTPUT
+
+      - name: Build and push Tomcat image
+        if: steps.changes.outputs.TOMCAT_CHANGED == 'true'
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: |
+            ${{ secrets.ECR_URI }}/${{ env.TOMCAT_ECR_REPO }}:${{ steps.image-tag.outputs.IMAGE_TAG }}
+            ${{ secrets.ECR_URI }}/${{ env.TOMCAT_ECR_REPO }}:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          platforms: linux/amd64
+
+      - name: Build and push Nginx image
+        if: steps.changes.outputs.NGINX_CHANGED == 'true'
+        uses: docker/build-push-action@v5
+        with:
+          context: ./nginx
+          file: ./nginx/Dockerfile
+          push: true
+          tags: |
+            ${{ secrets.ECR_URI }}/${{ env.NGINX_ECR_REPO }}:${{ steps.image-tag.outputs.IMAGE_TAG }}
+            ${{ secrets.ECR_URI }}/${{ env.NGINX_ECR_REPO }}:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          platforms: linux/amd64
+
+      - name: Checkout GitOps repository
+        if: steps.changes.outputs.TOMCAT_CHANGED == 'true' || steps.changes.outputs.NGINX_CHANGED == 'true'
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.GITOPS_REPO }}
+          token: ${{ secrets.GITOPS_TOKEN }}
+          path: gitops-repo
+
+      - name: Update k8s manifests with new image tags
+        if: steps.changes.outputs.TOMCAT_CHANGED == 'true' || steps.changes.outputs.NGINX_CHANGED == 'true'
+        working-directory: gitops-repo/${{ env.GITOPS_MANIFEST_PATH }}
+        run: |
+          IMAGE_TAG="${{ steps.image-tag.outputs.IMAGE_TAG }}"
+          ECR_URI="${{ secrets.ECR_URI }}"
+
+          # Update check-tomcat.yaml only if Tomcat changed
+          if [ "${{ steps.changes.outputs.TOMCAT_CHANGED }}" == "true" ]; then
+            sed -i "s|image: .*/${{ env.TOMCAT_ECR_REPO }}:.*|image: ${ECR_URI}/${{ env.TOMCAT_ECR_REPO }}:${IMAGE_TAG}|g" check-tomcat.yaml
+            echo "✅ Updated check-tomcat.yaml to ${IMAGE_TAG}"
+          fi
+
+          # Update check-nginx.yaml only if Nginx changed
+          if [ "${{ steps.changes.outputs.NGINX_CHANGED }}" == "true" ]; then
+            sed -i "s|image: .*/${{ env.NGINX_ECR_REPO }}:.*|image: ${ECR_URI}/${{ env.NGINX_ECR_REPO }}:${IMAGE_TAG}|g" check-nginx.yaml
+            echo "✅ Updated check-nginx.yaml to ${IMAGE_TAG}"
+          fi
+
+      - name: Commit and push manifest changes
+        if: steps.changes.outputs.TOMCAT_CHANGED == 'true' || steps.changes.outputs.NGINX_CHANGED == 'true'
+        working-directory: gitops-repo
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add .
+
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore: update image tags to ${{ steps.image-tag.outputs.IMAGE_TAG }} [skip ci]"
+            git push
+            echo "✅ Pushed manifest updates to GitOps repo"
+          fi
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "### 🚀 CI Build Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Image Tag:** \`${{ steps.image-tag.outputs.IMAGE_TAG }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "**Commit:** \`${{ steps.image-tag.outputs.SHORT_SHA }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "#### Images Built:" >> $GITHUB_STEP_SUMMARY
+
+          if [ "${{ steps.changes.outputs.TOMCAT_CHANGED }}" == "true" ]; then
+            echo "- ✅ Tomcat: \`${{ secrets.ECR_URI }}/${{ env.TOMCAT_ECR_REPO }}:${{ steps.image-tag.outputs.IMAGE_TAG }}\`" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "- ⏭️ Tomcat: Skipped (no changes)" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          if [ "${{ steps.changes.outputs.NGINX_CHANGED }}" == "true" ]; then
+            echo "- ✅ Nginx: \`${{ secrets.ECR_URI }}/${{ env.NGINX_ECR_REPO }}:${{ steps.image-tag.outputs.IMAGE_TAG }}\`" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "- ⏭️ Nginx: Skipped (no changes)" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "#### GitOps Update:" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ steps.changes.outputs.TOMCAT_CHANGED }}" == "true" ] || [ "${{ steps.changes.outputs.NGINX_CHANGED }}" == "true" ]; then
+            echo "✅ Manifests updated in [\`${{ env.GITOPS_REPO }}\`](https://github.com/${{ env.GITOPS_REPO }})" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "ArgoCD will detect the changes and sync automatically." >> $GITHUB_STEP_SUMMARY
+          else
+            echo "⏭️ No manifest updates needed" >> $GITHUB_STEP_SUMMARY
+          fi
