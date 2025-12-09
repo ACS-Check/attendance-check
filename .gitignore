@@ -37,9 +37,3 @@ build/
 
 ### Mac OS ###
 .DS_Store
-
-### docker ###
-Dockerfile
-default.conf
-
-/tomcat
