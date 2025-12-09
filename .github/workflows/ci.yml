@@ -7,6 +7,8 @@ on:
 
 env:
   AWS_REGION: ap-northeast-2
+  TOMCAT_ECR_REPO: ecr-cc-tomcat
+  NGINX_ECR_REPO: ecr-cc-nginx
   GITOPS_REPO: ACS-Check/attendance-check-gitops
   GITOPS_MANIFEST_PATH: .
 
@@ -86,8 +88,8 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: |
-            ${{ secrets.ECR_URI }}/${{ secrets.TOMCAT_ECR_REPO }}:${{ steps.image-tag.outputs.IMAGE_TAG }}
-            ${{ secrets.ECR_URI }}/${{ secrets.TOMCAT_ECR_REPO }}:latest
+            ${{ secrets.ECR_URI }}/${{ env.TOMCAT_ECR_REPO }}:${{ steps.image-tag.outputs.IMAGE_TAG }}
+            ${{ secrets.ECR_URI }}/${{ env.TOMCAT_ECR_REPO }}:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
           platforms: linux/amd64
@@ -100,8 +102,8 @@ jobs:
           file: ./nginx/Dockerfile
           push: true
           tags: |
-            ${{ secrets.ECR_URI }}/${{ secrets.NGINX_ECR_REPO }}:${{ steps.image-tag.outputs.IMAGE_TAG }}
-            ${{ secrets.ECR_URI }}/${{ secrets.NGINX_ECR_REPO }}:latest
+            ${{ secrets.ECR_URI }}/${{ env.NGINX_ECR_REPO }}:${{ steps.image-tag.outputs.IMAGE_TAG }}
+            ${{ secrets.ECR_URI }}/${{ env.NGINX_ECR_REPO }}:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
           platforms: linux/amd64
@@ -120,30 +122,32 @@ jobs:
         run: |
           IMAGE_TAG="${{ steps.image-tag.outputs.IMAGE_TAG }}"
           ECR_URI="${{ secrets.ECR_URI }}"
-          TOMCAT_REPO="${{ secrets.TOMCAT_ECR_REPO }}"
-          NGINX_REPO="${{ secrets.NGINX_ECR_REPO }}"
+          TOMCAT_REPO="${{ env.TOMCAT_ECR_REPO }}"
+          NGINX_REPO="${{ env.NGINX_ECR_REPO }}"
 
           # Update cc-tomcat-deploy.yaml only if Tomcat changed
           if [ "${{ steps.changes.outputs.TOMCAT_CHANGED }}" == "true" ]; then
             echo "Before update:"
-            grep "image:.*${TOMCAT_REPO}" cc-tomcat-deploy.yaml || echo "No matching line found"
+            grep -n "name: check-tomcat" -A 1 cc-tomcat-deploy.yaml | grep "image:"
             
-            sed -i "s|image: .*${TOMCAT_REPO}:.*|image: ${ECR_URI}/${TOMCAT_REPO}:${IMAGE_TAG}|g" cc-tomcat-deploy.yaml
+            # Match container name "check-tomcat" and update its image line
+            sed -i '/name: check-tomcat/,/image:/ s|image: .*|image: '"${ECR_URI}/${TOMCAT_REPO}:${IMAGE_TAG}"'|' cc-tomcat-deploy.yaml
             
             echo "After update:"
-            grep "image:.*${TOMCAT_REPO}" cc-tomcat-deploy.yaml || echo "No matching line found"
+            grep -n "name: check-tomcat" -A 1 cc-tomcat-deploy.yaml | grep "image:"
             echo "✅ Updated cc-tomcat-deploy.yaml to ${IMAGE_TAG}"
           fi
 
           # Update cc-nginx-deploy.yaml only if Nginx changed
           if [ "${{ steps.changes.outputs.NGINX_CHANGED }}" == "true" ]; then
             echo "Before update:"
-            grep "image:.*${NGINX_REPO}" cc-nginx-deploy.yaml || echo "No matching line found"
+            grep -n "name: check-nginx" -A 1 cc-nginx-deploy.yaml | grep "image:"
             
-            sed -i "s|image: .*${NGINX_REPO}:.*|image: ${ECR_URI}/${NGINX_REPO}:${IMAGE_TAG}|g" cc-nginx-deploy.yaml
+            # Match container name "check-nginx" and update its image line
+            sed -i '/name: check-nginx/,/image:/ s|image: .*|image: '"${ECR_URI}/${NGINX_REPO}:${IMAGE_TAG}"'|' cc-nginx-deploy.yaml
             
             echo "After update:"
-            grep "image:.*${NGINX_REPO}" cc-nginx-deploy.yaml || echo "No matching line found"
+            grep -n "name: check-nginx" -A 1 cc-nginx-deploy.yaml | grep "image:"
             echo "✅ Updated cc-nginx-deploy.yaml to ${IMAGE_TAG}"
           fi
 
@@ -175,13 +179,13 @@ jobs:
           echo "#### Images Built:" >> $GITHUB_STEP_SUMMARY
 
           if [ "${{ steps.changes.outputs.TOMCAT_CHANGED }}" == "true" ]; then
-            echo "- ✅ Tomcat: \`${{ secrets.ECR_URI }}/${{ secrets.TOMCAT_ECR_REPO }}:${{ steps.image-tag.outputs.IMAGE_TAG }}\`" >> $GITHUB_STEP_SUMMARY
+            echo "- ✅ Tomcat: \`${{ secrets.ECR_URI }}/${{ env.TOMCAT_ECR_REPO }}:${{ steps.image-tag.outputs.IMAGE_TAG }}\`" >> $GITHUB_STEP_SUMMARY
           else
             echo "- ⏭️ Tomcat: Skipped (no changes)" >> $GITHUB_STEP_SUMMARY
           fi
 
           if [ "${{ steps.changes.outputs.NGINX_CHANGED }}" == "true" ]; then
-            echo "- ✅ Nginx: \`${{ secrets.ECR_URI }}/${{ secrets.NGINX_ECR_REPO }}:${{ steps.image-tag.outputs.IMAGE_TAG }}\`" >> $GITHUB_STEP_SUMMARY
+            echo "- ✅ Nginx: \`${{ secrets.ECR_URI }}/${{ env.NGINX_ECR_REPO }}:${{ steps.image-tag.outputs.IMAGE_TAG }}\`" >> $GITHUB_STEP_SUMMARY
           else
             echo "- ⏭️ Nginx: Skipped (no changes)" >> $GITHUB_STEP_SUMMARY
           fi
