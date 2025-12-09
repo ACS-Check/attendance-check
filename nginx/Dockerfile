@@ -115,3 +115,4 @@ USER 65532
 
 # Nginx 포그라운드 실행
 ENTRYPOINT ["/usr/sbin/nginx", "-g", "daemon off;"]
+ 
