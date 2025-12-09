@@ -3,7 +3,7 @@ FROM nginx:alpine
 WORKDIR /usr/share/nginx/html
 
 # Copy reverse proxy configuration
-COPY conf.d/default.conf /etc/nginx/conf.d/default.conf
+COPY default.conf /etc/nginx/conf.d/default.conf
 
 # Bring in build context (dist optional)
 COPY . /tmp/context
