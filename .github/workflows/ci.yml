@@ -7,13 +7,15 @@ on:
 
 env:
   AWS_REGION: ap-northeast-2
-  TOMCAT_ECR_REPO: ecr-cc-tomcat
-  NGINX_ECR_REPO: ecr-cc-nginx
   GITOPS_REPO: ACS-Check/attendance-check-gitops
   GITOPS_MANIFEST_PATH: .
 
 jobs:
   build-and-push:
+    # ubuntu-22.04 사용 이유:
+    # - ubuntu-20.04는 2024년 12월 3일 deprecated, 2025년 6월 3일 완전 제거 예정
+    # - VM이 20.04라도 CI runner는 최신 LTS 사용 권장 (호환성 문제 없음)
+    # - Docker 빌드는 runner OS와 무관하게 동작
     runs-on: ubuntu-22.04
     permissions:
       contents: read
@@ -88,8 +90,8 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: |
-            ${{ secrets.ECR_URI }}/${{ env.TOMCAT_ECR_REPO }}:${{ steps.image-tag.outputs.IMAGE_TAG }}
-            ${{ secrets.ECR_URI }}/${{ env.TOMCAT_ECR_REPO }}:latest
+            ${{ secrets.ECR_URI }}/${{ secrets.TOMCAT_ECR_REPO }}:${{ steps.image-tag.outputs.IMAGE_TAG }}
+            ${{ secrets.ECR_URI }}/${{ secrets.TOMCAT_ECR_REPO }}:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
           platforms: linux/amd64
@@ -102,8 +104,8 @@ jobs:
           file: ./nginx/Dockerfile
           push: true
           tags: |
-            ${{ secrets.ECR_URI }}/${{ env.NGINX_ECR_REPO }}:${{ steps.image-tag.outputs.IMAGE_TAG }}
-            ${{ secrets.ECR_URI }}/${{ env.NGINX_ECR_REPO }}:latest
+            ${{ secrets.ECR_URI }}/${{ secrets.NGINX_ECR_REPO }}:${{ steps.image-tag.outputs.IMAGE_TAG }}
+            ${{ secrets.ECR_URI }}/${{ secrets.NGINX_ECR_REPO }}:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
           platforms: linux/amd64
@@ -122,8 +124,8 @@ jobs:
         run: |
           IMAGE_TAG="${{ steps.image-tag.outputs.IMAGE_TAG }}"
           ECR_URI="${{ secrets.ECR_URI }}"
-          TOMCAT_REPO="${{ env.TOMCAT_ECR_REPO }}"
-          NGINX_REPO="${{ env.NGINX_ECR_REPO }}"
+          TOMCAT_REPO="${{ secrets.TOMCAT_ECR_REPO }}"
+          NGINX_REPO="${{ secrets.NGINX_ECR_REPO }}"
 
           # Update cc-tomcat-deploy.yaml only if Tomcat changed
           if [ "${{ steps.changes.outputs.TOMCAT_CHANGED }}" == "true" ]; then
@@ -179,13 +181,13 @@ jobs:
           echo "#### Images Built:" >> $GITHUB_STEP_SUMMARY
 
           if [ "${{ steps.changes.outputs.TOMCAT_CHANGED }}" == "true" ]; then
-            echo "- ✅ Tomcat: \`${{ secrets.ECR_URI }}/${{ env.TOMCAT_ECR_REPO }}:${{ steps.image-tag.outputs.IMAGE_TAG }}\`" >> $GITHUB_STEP_SUMMARY
+            echo "- ✅ Tomcat: \`${{ secrets.ECR_URI }}/${{ secrets.TOMCAT_ECR_REPO }}:${{ steps.image-tag.outputs.IMAGE_TAG }}\`" >> $GITHUB_STEP_SUMMARY
           else
             echo "- ⏭️ Tomcat: Skipped (no changes)" >> $GITHUB_STEP_SUMMARY
           fi
 
           if [ "${{ steps.changes.outputs.NGINX_CHANGED }}" == "true" ]; then
-            echo "- ✅ Nginx: \`${{ secrets.ECR_URI }}/${{ env.NGINX_ECR_REPO }}:${{ steps.image-tag.outputs.IMAGE_TAG }}\`" >> $GITHUB_STEP_SUMMARY
+            echo "- ✅ Nginx: \`${{ secrets.ECR_URI }}/${{ secrets.NGINX_ECR_REPO }}:${{ steps.image-tag.outputs.IMAGE_TAG }}\`" >> $GITHUB_STEP_SUMMARY
           else
             echo "- ⏭️ Nginx: Skipped (no changes)" >> $GITHUB_STEP_SUMMARY
           fi
