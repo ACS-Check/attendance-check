@@ -32,8 +32,8 @@
   <form class="space-y-6" method="post" action="${pageContext.request.contextPath}/login">
         <div class="space-y-1">
           <div class="mb-1 flex items-center justify-between">
-            <label for="userId" class="block text-sm font-bold text-gray-900">
-              학번
+            <label for="userId" class="block text-sm font-semibold text-gray-800">
+              아이디
             </label>
           </div>
           <input
