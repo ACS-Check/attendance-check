@@ -123,16 +123,16 @@ jobs:
           IMAGE_TAG="${{ steps.image-tag.outputs.IMAGE_TAG }}"
           ECR_URI="${{ secrets.ECR_URI }}"
 
-          # Update check-tomcat.yaml only if Tomcat changed
+          # Update cc-tomcat-deploy.yaml only if Tomcat changed
           if [ "${{ steps.changes.outputs.TOMCAT_CHANGED }}" == "true" ]; then
-            sed -i "s|image: .*/${{ env.TOMCAT_ECR_REPO }}:.*|image: ${ECR_URI}/${{ env.TOMCAT_ECR_REPO }}:${IMAGE_TAG}|g" check-tomcat.yaml
-            echo "✅ Updated check-tomcat.yaml to ${IMAGE_TAG}"
+            sed -i "s|image: .*/${{ env.TOMCAT_ECR_REPO }}:.*|image: ${ECR_URI}/${{ env.TOMCAT_ECR_REPO }}:${IMAGE_TAG}|g" cc-tomcat-deploy.yaml
+            echo "✅ Updated cc-tomcat-deploy.yaml to ${IMAGE_TAG}"
           fi
 
-          # Update check-nginx.yaml only if Nginx changed
+          # Update cc-nginx-deploy.yaml only if Nginx changed
           if [ "${{ steps.changes.outputs.NGINX_CHANGED }}" == "true" ]; then
-            sed -i "s|image: .*/${{ env.NGINX_ECR_REPO }}:.*|image: ${ECR_URI}/${{ env.NGINX_ECR_REPO }}:${IMAGE_TAG}|g" check-nginx.yaml
-            echo "✅ Updated check-nginx.yaml to ${IMAGE_TAG}"
+            sed -i "s|image: .*/${{ env.NGINX_ECR_REPO }}:.*|image: ${ECR_URI}/${{ env.NGINX_ECR_REPO }}:${IMAGE_TAG}|g" cc-nginx-deploy.yaml
+            echo "✅ Updated cc-nginx-deploy.yaml to ${IMAGE_TAG}"
           fi
 
       - name: Commit and push manifest changes
