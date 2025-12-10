@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<t:layout title="통합 LOGIN">
+<t:layout title="출석 관리 시스템 - 로그인">
   <div class="flex flex-col items-center w-full max-w-md relative">
     <div class="relative flex items-center justify-center gap-4 bg-gradient-to-r from-gray-950 via-black to-gray-950 px-8 py-4 rounded-t-2xl shadow-[0_0_50px_rgba(255,153,0,0.5)] border-4 border-b-0 border-primary-500 overflow-hidden z-10">
       <div class="absolute inset-0 bg-gradient-to-r from-primary-500/30 via-primary-400/40 to-primary-500/30 animate-pulse"></div>
