@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%
-  // JWT 토큰 기반 리다이렉트 처리
+  // JWT 토큰 기반 리다이렉트 처리!
   String token = util.JwtUtil.getTokenFromRequest(request);
   String role = null;
   
