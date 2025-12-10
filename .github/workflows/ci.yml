@@ -93,7 +93,6 @@ jobs:
           tags: ${{ secrets.ECR_URI }}/${{ secrets.TOMCAT_ECR_REPO }}:${{ steps.image-tag.outputs.IMAGE_TAG }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          platforms: linux/amd64
 
       - name: Build and push Nginx image
         if: steps.changes.outputs.NGINX_CHANGED == 'true'
@@ -105,7 +104,6 @@ jobs:
           tags: ${{ secrets.ECR_URI }}/${{ secrets.NGINX_ECR_REPO }}:${{ steps.image-tag.outputs.IMAGE_TAG }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          platforms: linux/amd64
 
       - name: Checkout GitOps repository
         if: steps.changes.outputs.TOMCAT_CHANGED == 'true' || steps.changes.outputs.NGINX_CHANGED == 'true'
