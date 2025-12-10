@@ -18,4 +18,8 @@ RUN set -eux; \
 
 EXPOSE 80
 
-CMD ["nginx", "-g", "daemon off;"]
+# Tomcat 컨테이너와 맞춰서 UID 65532(non-root) 사용
+USER 65532
+
+# Nginx 포그라운드 실행
+ENTRYPOINT ["/usr/sbin/nginx", "-g", "daemon off;"]
