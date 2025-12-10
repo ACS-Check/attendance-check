@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - v2
+      - v1
 
 env:
   AWS_REGION: ap-northeast-2
