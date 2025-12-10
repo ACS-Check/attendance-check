@@ -34,7 +34,7 @@
   
   boolean onlyRoot = rootOnly != null && rootOnly.booleanValue();
   String rid = (rootId != null && !rootId.isBlank()) ? rootId : "root";
-  String pageTitle = (title != null && !title.isBlank()) ? title : "Attendance System";
+  String pageTitle = (title != null && !title.isBlank()) ? title : "출석 관리 시스템";
 %>
 <!doctype html>
 <html lang="ko">
