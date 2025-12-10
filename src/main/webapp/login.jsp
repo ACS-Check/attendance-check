@@ -6,7 +6,7 @@
     <div class="relative flex items-center justify-center gap-4 bg-gradient-to-r from-gray-950 via-black to-gray-950 px-8 py-4 rounded-t-2xl shadow-[0_0_50px_rgba(255,153,0,0.5)] border-4 border-b-0 border-primary-500 overflow-hidden z-10">
       <div class="absolute inset-0 bg-gradient-to-r from-primary-500/30 via-primary-400/40 to-primary-500/30 animate-pulse"></div>
       <div class="relative bg-white p-2 rounded-lg shadow-[0_0_30px_rgba(255,153,0,0.8)] animate-pulse">
-        <img src="${pageContext.request.contextPath}/static/icon-aws.svg" alt="AWS" class="h-10 w-10">
+        <img src="${pageContext.request.contextPath}/static/icon-aws.svg" alt="AWS Cloud School" class="h-10 w-10">
       </div>
       <h2 class="relative text-2xl font-black text-primary-300 tracking-wide animate-pulse brightness-150" style="text-shadow: 0 0 30px rgba(255,200,100,1), 0 0 50px rgba(255,180,80,0.9), 0 0 70px rgba(255,153,0,0.7), 0 0 90px rgba(255,153,0,0.5);">출석관리시스템</h2>
       <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary-400 to-transparent shadow-[0_0_15px_rgba(255,153,0,0.8)] animate-pulse"></div>
