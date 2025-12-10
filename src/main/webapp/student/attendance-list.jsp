@@ -3,28 +3,29 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <t:layout title="나의 출석 기록">
-  <div class="flex flex-col w-full max-w-4xl mx-auto rounded-md shadow-md p-6 bg-white">
+  <div class="flex flex-col flex-1 w-full px-6 py-8">
     <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-4">
       <div>
         <h1 class="text-2xl font-bold text-gray-900 mb-1">나의 출석 기록</h1>
         <p class="text-sm text-gray-600">월을 선택하면 해당 월의 출석/지각 내역을 불러옵니다.</p>
+        <div class="h-1 w-16 bg-primary-500 mt-2"></div>
       </div>
       <div class="flex items-center gap-2">
     <label for="month" class="text-sm font-semibold text-gray-700">월 선택</label>
   <input id="month" type="month" value="${initialMonth}" class="rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-primary-500 focus:ring-2 focus:ring-primary-200" />
-  <button type="button" id="reloadBtn" class="rounded-md bg-primary-600 text-white px-4 py-2 text-sm font-semibold shadow hover:bg-primary-700">조회</button>
+  <button type="button" id="reloadBtn" class="rounded-lg bg-primary-500 text-white px-6 py-2.5 text-sm font-bold hover:bg-primary-600 shadow-md transition-all duration-200">조회</button>
       </div>
     </div>
 
     <div class="mb-4 flex flex-wrap gap-4 text-sm">
-      <div class="flex items-center gap-2"><span class="font-semibold">총 출석 일수:</span><span id="presentCount">0</span></div>
-      <div class="flex items-center gap-2"><span class="font-semibold">총 지각 일수:</span><span id="lateCount">0</span></div>
+      <div class="flex items-center gap-2 bg-green-50 px-4 py-2 rounded-md border-l-4 border-green-500"><span class="font-semibold text-green-700">총 출석 일수:</span><span id="presentCount" class="font-bold text-green-600">0</span></div>
+      <div class="flex items-center gap-2 bg-yellow-50 px-4 py-2 rounded-md border-l-4 border-yellow-500"><span class="font-semibold text-yellow-700">총 지각 일수:</span><span id="lateCount" class="font-bold text-yellow-600">0</span></div>
     </div>
 
-    <div class="overflow-x-auto">
+    <div class="overflow-x-auto rounded-lg shadow-md">
       <table class="min-w-full border text-sm" id="attendanceTable">
         <thead>
-          <tr class="bg-gray-100 text-left">
+          <tr class="bg-primary-500 text-white text-left">
             <th class="px-3 py-2 border">날짜</th>
             <th class="px-3 py-2 border">시간</th>
             <th class="px-3 py-2 border">상태</th>

@@ -4,7 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <t:layout title="학생 관리">
-  <div class="flex flex-col text-left w-full rounded-md shadow-md p-8 bg-white">
+  <div class="flex flex-col flex-1 w-full px-6 py-8">
     <div class="mb-6 w-full flex items-center justify-between">
       <div>
         <h1 class="text-2xl font-extrabold text-gray-900 tracking-tight">학생 목록</h1>

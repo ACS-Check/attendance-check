@@ -53,10 +53,10 @@
         text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
       }
       /* Layout (standard mode) */
-      body.std-body { margin:0; background:#f3f4f6; color:#111827; }
+      body.std-body { margin:0; background:#f8f9fa; color:#111827; }
       <%-- main { margin:20px auto; background:#ffffff; padding:24px; border-radius:12px; box-shadow:0 2px 4px rgba(0,0,0,.08); } --%>
-      footer.site { text-align:center; font-size:12px; color:#6b7280; padding:32px 0 40px; }
-      .role-badge { font-size:11px; background:#374151; color:#e5e7eb; padding:2px 6px; border-radius:6px; margin-left:8px; }
+      footer.site { text-align:center; font-size:12px; color:#e0e7ff; padding:32px 0 40px; }
+      .role-badge { font-size:11px; background:#10b981; color:#ffffff; padding:2px 6px; border-radius:6px; margin-left:8px; }
       .muted { color:#6b7280; font-size:12px; margin-top:0; }
       /* Root-only mode ensures full viewport mount */
       body:not(.std-body) { margin:0; min-height:100vh; display:flex; flex-direction:column; }
@@ -75,16 +75,19 @@
           extend: {
             colors: {
               primary: {
-                100: '#FFE6D1',
-                200: '#FFCE99',
-                300: '#FFB566',
-                400: '#FFA033',
-                500: '#FF9900', // base
-                600: '#E68A00',
-                700: '#CC7A00',
-                800: '#A86300',
-                900: '#854E00',
-                DEFAULT: '#FF9900',
+                100: '#ffe6d1',
+                200: '#ffce99',
+                300: '#ffb566',
+                400: '#ffa033',
+                500: '#ff9900', // base - AWS orange
+                600: '#e68a00',
+                700: '#cc7a00',
+                800: '#b36b00',
+                900: '#995c00',
+                DEFAULT: '#ff9900',
+              },
+              dark: {
+                900: '#232f3e', // AWS dark blue
               },
             },
           },
@@ -93,7 +96,7 @@
     </script>
     <%= (extraHead != null) ? extraHead : "" %>
   </head>
-  <body class="min-h-screen min-w-full flex flex-col">
+  <body class="min-h-screen min-w-full flex flex-col bg-gray-50">
     <% if (onlyRoot) { %>
       <div id="<%=rid%>"></div>
       <jsp:doBody/>
@@ -106,7 +109,7 @@
       <div class="flex flex-col md:h-screen md:w-full md:flex-row w-screen h-full">
         <header class="">
             <!-- Navigation Menu -->
-            <nav class="bg-primary-500 text-white w-full h-full md:w-56 flex-shrink-0">
+            <nav class="bg-[#232f3e] text-white w-full h-full md:w-56 flex-shrink-0 shadow-xl">
             <div class="h-16 flex items-center justify-between px-4 text-lg font-semibold tracking-tight">
                 <div class="flex items-center gap-3 justify-between w-full">
                 <div class="rounded-md bg-white p-1">
@@ -192,7 +195,7 @@
             </script>
         </header>
         <% } %>
-        <main class="flex-1 flex flex-col p-6 justify-center items-center">
+        <main class="flex-1 flex flex-col overflow-auto <%= hideHeader ? "justify-center items-center" : "" %>">
             <jsp:doBody/>
         </main>
       </div>
