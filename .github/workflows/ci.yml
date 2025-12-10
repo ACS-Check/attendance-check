@@ -90,9 +90,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: |
-            ${{ secrets.ECR_URI }}/${{ secrets.TOMCAT_ECR_REPO }}:${{ steps.image-tag.outputs.IMAGE_TAG }}
-            ${{ secrets.ECR_URI }}/${{ secrets.TOMCAT_ECR_REPO }}:latest
+          tags: ${{ secrets.ECR_URI }}/${{ secrets.TOMCAT_ECR_REPO }}:${{ steps.image-tag.outputs.IMAGE_TAG }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
           platforms: linux/amd64
@@ -104,9 +102,7 @@ jobs:
           context: ./nginx
           file: ./nginx/Dockerfile
           push: true
-          tags: |
-            ${{ secrets.ECR_URI }}/${{ secrets.NGINX_ECR_REPO }}:${{ steps.image-tag.outputs.IMAGE_TAG }}
-            ${{ secrets.ECR_URI }}/${{ secrets.NGINX_ECR_REPO }}:latest
+          tags: ${{ secrets.ECR_URI }}/${{ secrets.NGINX_ECR_REPO }}:${{ steps.image-tag.outputs.IMAGE_TAG }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
           platforms: linux/amd64
