@@ -8,7 +8,7 @@
       <div class="relative bg-white p-2 rounded-lg shadow-[0_0_30px_rgba(255,153,0,0.8)] animate-pulse">
         <img src="${pageContext.request.contextPath}/static/icon-aws.svg" alt="AWS Cloud School" class="h-10 w-10">
       </div>
-      <h2 class="relative text-2xl font-black text-primary-300 tracking-wide animate-pulse brightness-150" style="text-shadow: 0 0 30px rgba(255,200,100,1), 0 0 50px rgba(255,180,80,0.9), 0 0 70px rgba(255,153,0,0.7), 0 0 90px rgba(255,153,0,0.5);">CI/CD 테스트</h2>
+      <h2 class="relative text-2xl font-black text-primary-300 tracking-wide animate-pulse brightness-150" style="text-shadow: 0 0 30px rgba(255,200,100,1), 0 0 50px rgba(255,180,80,0.9), 0 0 70px rgba(255,153,0,0.7), 0 0 90px rgba(255,153,0,0.5);">출석관리시스템</h2>
       <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary-400 to-transparent shadow-[0_0_15px_rgba(255,153,0,0.8)] animate-pulse"></div>
       <div class="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-12 bg-gradient-to-b from-transparent via-primary-400 to-transparent shadow-[0_0_15px_rgba(255,153,0,0.8)] animate-pulse"></div>
       <div class="absolute right-0 top-1/2 -translate-y-1/2 w-1 h-12 bg-gradient-to-b from-transparent via-primary-400 to-transparent shadow-[0_0_15px_rgba(255,153,0,0.8)] animate-pulse"></div>
